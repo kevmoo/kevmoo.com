@@ -1,5 +1,5 @@
-firebase-debug.log
-/.firebase
 .dart_tool
-.packages
+/.firebase
+/.firebaserc
 build
+firebase-debug.log
