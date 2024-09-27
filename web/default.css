@@ -1,0 +1,54 @@
+body {
+  font-family: 'Roboto Slab', serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.profiles, h1, .description {
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+.description {
+  margin-top: 10px;
+}
+
+.profiles a {
+  display: inline-block;
+  margin-left: 1ex;
+  margin-right: 1ex;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 1em;
+  margin: 0 auto;
+}
+
+table .icon {
+  text-align: center;
+  vertical-align: top;
+}
+
+table .date {
+  vertical-align: top;
+}
+
+table .details {
+  color: gray;
+  font-weight: lighter;
+}
+
+table .details a {
+  font-weight: bolder;
+}

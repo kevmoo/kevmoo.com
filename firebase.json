@@ -1,0 +1,48 @@
+{
+  "hosting": {
+    "cleanUrls": true,
+    "predeploy": "dart run build_runner build -o web:build --release",
+    "public": "build",
+    "redirects": [
+      {
+        "source": "/resume/**",
+        "destination": "/",
+        "type": 302
+      },
+      {
+        "source": "/resume",
+        "destination": "/",
+        "type": 302
+      },
+      {
+        "regex": "(?i)/isu[_\\-]?ama",
+        "destination": "https://docs.google.com/presentation/d/1rRkOkK1xWnKudFdvXbsZ5VPZtswPLlrNZyWDmkYP6hs/edit?usp=sharing",
+        "type": 301
+      },
+      {
+        "source": "/industry-lecture-google",
+        "destination": "https://docs.google.com/presentation/d/1E9sqcgeKUuJKmuhYuEzSkH4WpC3273JUBqsjLVVh0OU/edit?usp=sharing",
+        "type": 301
+      }
+    ],
+    "headers": [
+      {
+        "source": "/",
+        "headers": [
+          {
+            "key": "X-Frame-Options",
+            "value": "DENY"
+          },
+          {
+            "key": "X-Content-Type-Options",
+            "value": "nosniff"
+          },
+          {
+            "key": "Content-Security-Policy",
+            "value": "frame-ancestors 'none'; default-src https:; script-src 'unsafe-eval' https: 'nonce-okoboji'; base-uri 'none'"
+          }
+        ]
+      }
+    ]
+  }
+}
