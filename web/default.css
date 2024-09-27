@@ -52,3 +52,7 @@ table .details {
 table .details a {
   font-weight: bolder;
 }
+
+#source-code {
+  text-align: center;
+}
