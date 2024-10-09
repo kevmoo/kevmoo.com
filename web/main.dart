@@ -28,9 +28,11 @@ void main() {
 
 final _entries = [
   Entry(
-    title: 'Latest Developments in Flutter',
+    title: 'Flutter: Google’s UI toolkit for Mobile, Web, & Desktop Apps '
+        'from a Single Codebase',
     subTitle: 'GOSIM China 2024',
-    uri: 'https://china2024.gosim.org/schedule',
+    uri:
+        'https://china2024.gosim.org/schedules/flutter-googles-ui-toolkit-for-mobile-web-desktop-apps-from-a-single-codebase',
     date: DateTime(2024, 10, 17),
     flavor: EntryFlavor.calendar,
   ),
