@@ -28,6 +28,13 @@ void main() {
 
 final _entries = [
   Entry(
+    title: 'Flutter Web Updates with Kevin Moore',
+    subTitle: 'Flying High with Flutter',
+    uri: 'https://www.youtube.com/watch?v=-JAej7KKTUQ',
+    date: DateTime(2024, 11, 27),
+    flavor: EntryFlavor.youtube,
+  ),
+  Entry(
     title: 'Flutter: Google’s UI toolkit for Mobile, Web, & Desktop Apps '
         'from a Single Codebase',
     subTitle: 'GOSIM China 2024',
