@@ -255,7 +255,9 @@ enum EntryFlavor {
   }
 }
 
+const _nbh = '&#x2011;';
+
 extension on DateTime {
-  String get pretty => '$year-${month.toString().padLeft(2, '0')}-'
+  String get pretty => '$year$_nbh${month.toString().padLeft(2, '0')}$_nbh'
       '${day.toString().padLeft(2, '0')}';
 }

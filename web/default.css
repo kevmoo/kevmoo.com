@@ -12,6 +12,7 @@ a:hover {
 
 .profiles, h1, .description {
   text-align: center;
+  text-wrap: balance;
 }
 
 h1 {
@@ -55,4 +56,13 @@ table .details a {
 
 #source-code {
   text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  table .icon {
+    display: none;
+  }
+  table {
+    border-spacing: 1ex;
+  }
 }
