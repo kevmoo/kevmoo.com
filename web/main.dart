@@ -43,13 +43,6 @@ final _entries = [
     flavor: EntryFlavor.youtube,
   ),
   Entry(
-    title: 'Future of Dart Panel',
-    subTitle: 'FlutterCon USA 2024',
-    uri: 'https://flutterconusa.dev/speaker/kevin-moore/',
-    date: DateTime(2024, 9, 19),
-    flavor: EntryFlavor.calendar,
-  ),
-  Entry(
     title: 'Interview with Łukasz Kosman - Why do we need Flutter for Web?',
     subTitle: 'Flutter CTO Survey 2024',
     uri: 'https://www.youtube.com/watch?v=USTi-_KxJV0',
