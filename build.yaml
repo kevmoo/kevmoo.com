@@ -16,7 +16,7 @@ targets:
                 - --no-strip-wasm
             dart2js:
               args:
-                - --dump-info
+                - --stage=dump-info-all
                 - --no-source-maps
                 - --show-package-warnings
                 - -O4
