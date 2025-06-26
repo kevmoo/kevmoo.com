@@ -17,3 +17,4 @@ linter:
     - no_runtimeType_toString
     - unnecessary_await_in_return
     - unnecessary_breaks
+    - use_null_aware_elements

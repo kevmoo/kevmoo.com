@@ -28,6 +28,13 @@ void main() {
 
 final _entries = [
   Entry(
+    title: 'Talk TBD',
+    subTitle: 'fluttercon EU',
+    uri: 'https://www.droidcon.com/events/fluttercon-europe-2025/',
+    date: DateTime(2025, 9, 24),
+    flavor: EntryFlavor.calendar,
+  ),
+  Entry(
     title: 'Flutter Web Updates with Kevin Moore',
     subTitle: 'Flying High with Flutter',
     uri: 'https://www.youtube.com/watch?v=-JAej7KKTUQ',
@@ -35,7 +42,8 @@ final _entries = [
     flavor: EntryFlavor.youtube,
   ),
   Entry(
-    title: 'Flutter: Google’s UI toolkit for Mobile, Web, & Desktop Apps '
+    title:
+        'Flutter: Google’s UI toolkit for Mobile, Web, & Desktop Apps '
         'from a Single Codebase',
     subTitle: 'GOSIM China 2024',
     uri: 'https://www.youtube.com/watch?v=vbcPv0kiRdU',
@@ -251,6 +259,7 @@ enum EntryFlavor {
 const _nbh = '&#x2011;';
 
 extension on DateTime {
-  String get pretty => '$year$_nbh${month.toString().padLeft(2, '0')}$_nbh'
+  String get pretty =>
+      '$year$_nbh${month.toString().padLeft(2, '0')}$_nbh'
       '${day.toString().padLeft(2, '0')}';
 }
