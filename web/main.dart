@@ -28,9 +28,9 @@ void main() {
 
 final _entries = [
   Entry(
-    title: 'Talk TBD',
+    title: "Let's go far with Flutter",
     subTitle: 'fluttercon EU',
-    uri: 'https://www.droidcon.com/events/fluttercon-europe-2025/',
+    uri: 'https://www.fluttercon.dev/speakers/kevin-moore',
     date: DateTime(2025, 9, 24),
     flavor: EntryFlavor.calendar,
   ),
