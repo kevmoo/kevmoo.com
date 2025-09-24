@@ -30,9 +30,9 @@ final _entries = [
   Entry(
     title: "Let's go far with Flutter",
     subTitle: 'fluttercon EU',
-    uri: 'https://www.fluttercon.dev/speakers/kevin-moore',
+    uri: 'https://www.youtube.com/watch?v=lgG3O_sScqU',
     date: DateTime(2025, 9, 24),
-    flavor: EntryFlavor.calendar,
+    flavor: EntryFlavor.youtube,
   ),
   Entry(
     title: 'Flutter Web Updates with Kevin Moore',
