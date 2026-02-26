@@ -3,23 +3,25 @@ import 'dart:js_interop';
 import 'package:web/web.dart';
 
 void main() {
-  final linksTable = document.querySelector('table') as HTMLTableElement;
-
-  final tableBody = linksTable.createTBody();
+  final listContainer =
+      document.querySelector('#appearance-list') as HTMLElement;
 
   for (var entry in _entries.reversed) {
     final link =
         '<a href="${entry.uri}" rel="noopener" target="_blank">${entry.title}</a>';
 
     final subContent = entry.subTitle ?? '&nbsp;';
-    tableBody.insertAdjacentHTML(
+    listContainer.insertAdjacentHTML(
       'beforeend',
       '''
-<tr>
-  <td class="icon">${entry.flavor.awesome}</td>
-  <td class="details">$link<br>$subContent</td>
-  <td class="date">${entry.date.pretty}</td>
-</tr>
+<div class="card">
+  <div class="icon">${entry.flavor.awesome}</div>
+  <div class="details">
+    <div class="title">$link</div>
+    <div class="subtitle">$subContent</div>
+  </div>
+  <div class="date">${entry.date.pretty}</div>
+</div>
 '''
           .toJS,
     );
