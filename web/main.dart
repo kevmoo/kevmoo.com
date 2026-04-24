@@ -30,6 +30,13 @@ void main() {
 
 final _entries = [
   Entry(
+    title: 'Unify your tech stack with Dart',
+    subTitle: 'Google Cloud Next 2026',
+    uri: 'https://www.youtube.com/live/JemyjTlOvy0?si=w87XXNSpsjDRItaR&t=13642',
+    date: DateTime(2026, 4, 23),
+    flavor: EntryFlavor.youtube,
+  ),
+  Entry(
     title: "Let's go far with Flutter",
     subTitle: 'fluttercon EU',
     uri: 'https://www.youtube.com/watch?v=lgG3O_sScqU',
