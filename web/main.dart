@@ -31,7 +31,7 @@ void main() {
 final _entries = [
   Entry(
     title: 'Unify your tech stack with Dart',
-    subTitle: 'Google Cloud Next 2026 (Short)',
+    subTitle: 'Google Cloud Next 2026',
     uri: 'https://www.youtube.com/watch?v=XOU5dZJvHXk',
     date: DateTime(2026, 4, 24),
     flavor: EntryFlavor.youtube,
