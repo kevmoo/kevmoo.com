@@ -1,8 +1,8 @@
 {
     "hosting": {
-        "predeploy": "bundle exec jekyll b",
-    	"site": "work-j832",
-        "public": "_site",
+        "predeploy": "dart run tool/build.dart",
+        "site": "work-j832",
+        "public": "build/jaspr",
         "ignore": [
             "**/.*",
             "firebase.json"

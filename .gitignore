@@ -3,3 +3,11 @@
 .sass-cache
 firebase-debug.log
 _site
+
+.dart_tool
+build
+node_modules
+web/styles.css
+web/feed.xml
+web/sitemap.xml
+

@@ -1,0 +1,24 @@
+name: work_j832_com
+description: kevmoo @ Work blog migrated to Dart and Jaspr
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.12.0-0
+
+dependencies:
+  jaspr: ^0.23.1
+  jaspr_router: ^0.8.2
+  markdown: ^7.3.0
+  path: ^1.9.0
+  xml: ^6.5.0
+  yaml: ^3.1.2
+
+dev_dependencies:
+  build_runner: ^2.10.0
+  build_web_compilers: ^4.4.19
+  dart_flutter_team_lints: ^3.0.0
+  http: ^1.2.0
+  jaspr_builder: ^0.23.1
+jaspr:
+  mode: static
