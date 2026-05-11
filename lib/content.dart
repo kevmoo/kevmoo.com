@@ -100,7 +100,7 @@ List<Post> _loadPosts() {
         date ??= DateTime.now();
 
         // Parse flavor
-        EntryFlavor flavor = EntryFlavor.youtube;
+        var flavor = EntryFlavor.youtube;
         final yamlFlavor = yaml['flavor']?.toString();
         if (yamlFlavor != null) {
           try {

@@ -1,6 +1,8 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../components/footer.dart';
+import '../components/header.dart';
 import '../content.dart' as content;
 
 class PostPage extends StatelessComponent {
@@ -44,6 +46,7 @@ class PostPage extends StatelessComponent {
     final dateString = _formatDate(post.date);
 
     return div(classes: 'bg-white text-slate-700 flex-1 flex flex-col', [
+      const Header(),
       div(classes: 'max-w-2xl w-full mx-auto px-6 py-16 flex-1', [
         // Back link
         const a(
@@ -90,8 +93,9 @@ class PostPage extends StatelessComponent {
         ]),
 
         // Article Body (Beautiful Prose)
-        article(classes: 'prose', [RawText(post.contentHtml)]),
+        article(classes: 'prose', [RawText(post.contentHtml ?? '')]),
       ]),
+      const Footer(),
     ]);
   }
 

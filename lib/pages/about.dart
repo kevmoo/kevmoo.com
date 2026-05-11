@@ -3,6 +3,9 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:markdown/markdown.dart' as md;
 
+import '../components/footer.dart';
+import '../components/header.dart';
+
 class About extends StatelessComponent {
   const About({super.key});
 
@@ -43,6 +46,7 @@ class About extends StatelessComponent {
     }
 
     return div(classes: 'bg-white text-slate-700 flex-1 flex flex-col', [
+      const Header(),
       div(classes: 'max-w-2xl w-full mx-auto px-6 py-16 flex-1', [
         h1(
           classes:
@@ -52,6 +56,7 @@ class About extends StatelessComponent {
         ),
         article(classes: 'prose', [RawText(pageContentHtml)]),
       ]),
+      const Footer(),
     ]);
   }
 }

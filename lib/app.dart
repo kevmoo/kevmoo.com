@@ -2,8 +2,6 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
-import 'components/footer.dart';
-import 'components/header.dart';
 import 'content.dart' as content;
 import 'pages/about.dart';
 import 'pages/home.dart';
@@ -27,29 +25,21 @@ class App extends StatelessComponent {
         .toList();
 
     return div(classes: 'min-h-screen flex flex-col text-slate-700 font-sans', [
-      const Header(),
-      Component.element(
-        tag: 'main',
-        classes: 'flex-1 flex flex-col',
-        children: [
-          Router(
-            routes: [
-              Route(
-                path: '/',
-                title: 'kevmoo @ Work',
-                builder: (context, state) => const Home(),
-              ),
-              Route(
-                path: '/about',
-                title: 'About | kevmoo @ Work',
-                builder: (context, state) => const About(),
-              ),
-              ...postRoutes,
-            ],
+      Router(
+        routes: [
+          Route(
+            path: '/',
+            title: 'kevmoo @ Work',
+            builder: (context, state) => const Home(),
           ),
+          Route(
+            path: '/about',
+            title: 'About | kevmoo @ Work',
+            builder: (context, state) => const About(),
+          ),
+          ...postRoutes,
         ],
       ),
-      const Footer(),
     ]);
   }
 }

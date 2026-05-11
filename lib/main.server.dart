@@ -40,7 +40,11 @@ void main() {
       styles: [
         css.import(
           'https://fonts.googleapis.com/css2?'
-          'family=Inter:wght@300;400;500;600;700;800;900&display=swap',
+          'family=Inter:wght@300;400;500;600;700;800;900'
+          '&family=Roboto+Slab:wght@300;400;600&display=swap',
+        ),
+        css.import(
+          'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css',
         ),
         // Include local Tailwind stylesheet
         css.import('/styles.css'),

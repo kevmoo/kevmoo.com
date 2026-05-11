@@ -1,6 +1,5 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
-
 import '../content.dart' as content;
 
 class Home extends StatelessComponent {
@@ -10,112 +9,174 @@ class Home extends StatelessComponent {
   Component build(BuildContext context) {
     final posts = content.posts;
 
-    return div(classes: 'max-w-2xl mx-auto px-6 py-16', [
-      // Blog Introduction / Hero
-      const div(classes: 'mb-16 text-center md:text-left', [
-        h1(
-          classes:
-              'text-4xl md:text-5xl font-black tracking-tight '
-              'text-slate-950 mb-4',
-          [Component.text('kevmoo @ Work')],
-        ),
-        p(classes: 'text-base text-slate-500 max-w-xl leading-relaxed', [
-          Component.text(
-            'Googler working on Dart and Flutter web technology. '
-            'Thoughts, notes, and bag of tricks.',
-          ),
-        ]),
-      ]),
-
-      // Posts Header
-      div(
-        classes:
-            'border-b border-slate-100 pb-4 mb-8 flex items-center '
-            'justify-between',
-        [
-          const h2(classes: 'text-lg font-extrabold text-slate-900', [
-            Component.text('Latest Articles'),
-          ]),
-          span(
-            classes:
-                'text-[11px] font-bold text-blue-600 px-2.5 py-1 '
-                'bg-blue-50 border border-blue-100/50 rounded-full '
-                'tracking-wider uppercase',
-            [Component.text('${posts.length} Posts')],
-          ),
-        ],
-      ),
-
-      // Post List
-      ul(
-        classes: 'divide-y divide-slate-100',
-        posts.map((post) {
-          final dateString = _formatDate(post.date);
-
-          return li(
-            classes:
-                'py-8 first:pt-0 last:pb-0 group transition-all '
-                'duration-200',
-            [
-              // Card container
-              div(classes: 'flex flex-col items-start', [
-                // Date above title
-                Component.element(
-                  tag: 'time',
-                  classes:
-                      'text-xs font-semibold text-slate-400 '
-                      'uppercase tracking-wider mb-2 block',
-                  children: [Component.text(dateString)],
+    return div(
+      classes:
+          'glass-theme min-h-screen w-full flex flex-col items-center '
+          'py-16 px-4',
+      [
+        div(classes: 'w-full max-w-3xl', [
+          // Header Block (Ported from kevmoo.com)
+          Component.element(
+            tag: 'header',
+            classes: 'text-center mb-12',
+            children: [
+              const h1(classes: 'text-5xl font-extrabold mb-4 tracking-tight', [
+                Component.text('Kevin Moore'),
+              ]),
+              const p(classes: 'description text-lg', [
+                a(
+                  href: 'https://www.google.com/',
+                  target: Target.blank,
+                  attributes: {'rel': 'noopener'},
+                  [Component.text('Google')],
                 ),
-                // Title
-                a(href: post.permalink, classes: 'block w-full', [
-                  h3(
-                    classes:
-                        'text-xl font-black text-slate-900 '
-                        'group-hover:text-blue-600 leading-snug mb-3 '
-                        'transition-colors duration-200',
-                    [Component.text(post.title)],
-                  ),
-                ]),
-                // Tags as modern pills
-                if (post.tags.isNotEmpty)
-                  div(
-                    classes: 'flex flex-wrap gap-1.5 mt-1',
-                    post.tags.map((tag) {
-                      return span(
-                        classes:
-                            'text-[11px] font-semibold text-slate-500 '
-                            'px-2.5 py-0.5 bg-slate-100/70 border '
-                            'border-slate-200/40 rounded-md transition-all '
-                            'duration-150 hover:bg-blue-50 '
-                            'hover:text-blue-600 cursor-pointer',
-                        [Component.text(tag)],
-                      );
-                    }).toList(),
-                  ),
+                Component.text(' product manager for '),
+                a(
+                  href: 'https://flutter.dev',
+                  target: Target.blank,
+                  attributes: {'rel': 'noopener'},
+                  [Component.text('Flutter')],
+                ),
+                Component.text(' and '),
+                a(
+                  href: 'https://dart.dev',
+                  target: Target.blank,
+                  attributes: {'rel': 'noopener'},
+                  [Component.text('Dart')],
+                ),
+                Component.text('.'),
+              ]),
+              // Social profile animated strips
+              div(classes: 'profiles', [
+                _buildSocialLink(
+                  'https://bsky.app/profile/kevmoo.com',
+                  'Bluesky @kevmoo.com',
+                  'fab fa-bluesky fa-2x',
+                ),
+                _buildSocialLink(
+                  'https://github.com/kevmoo/',
+                  'GitHub/kevmoo',
+                  'fab fa-github fa-2x',
+                ),
+                _buildSocialLink(
+                  'https://mastodon.social/@kevmoo',
+                  'mastodon.social/@kevmoo',
+                  'fab fa-mastodon fa-2x',
+                ),
+                _buildSocialLink(
+                  'https://www.linkedin.com/in/kevmoo/',
+                  'LinkedIn/kevmoo',
+                  'fab fa-linkedin fa-2x',
+                ),
+                _buildSocialLink(
+                  'https://www.reddit.com/user/kevmoo',
+                  'Reddit/kevmoo',
+                  'fab fa-reddit fa-2x',
+                ),
+                _buildSocialLink(
+                  'https://g.dev/kevmoo',
+                  'Google Developers',
+                  'fab fa-google fa-2x',
+                ),
+                _buildSocialLink(
+                  'https://twitter.com/kevmoo',
+                  'Twitter @kevmoo',
+                  'fab fa-twitter fa-2x',
+                ),
               ]),
             ],
-          );
-        }).toList(),
-      ),
-    ]);
+          ),
+
+          // Appearances & Post list
+          Component.element(
+            tag: 'main',
+            classes: 'flex flex-col gap-4',
+            attributes: {'id': 'appearance-list'},
+            children: [
+              ...posts.asMap().entries.map((entry) {
+                final index = entry.key;
+                final post = entry.value;
+                final isWriting = post.flavor == content.EntryFlavor.writing;
+                final linkUrl = isWriting ? post.permalink : (post.uri ?? '');
+
+                return div(
+                  classes:
+                      'glass-card appearance-card '
+                      '${index >= 10 ? 'hidden-card' : ''}',
+                  [
+                    div(classes: 'icon', [RawText(post.flavor.awesome)]),
+                    div(classes: 'details', [
+                      div(classes: 'title', [
+                        a(
+                          href: linkUrl,
+                          target: isWriting ? null : Target.blank,
+                          attributes: isWriting ? {} : {'rel': 'noopener'},
+                          [Component.text(post.title)],
+                        ),
+                      ]),
+                      if (post.subTitle != null && post.subTitle!.isNotEmpty)
+                        div(classes: 'subtitle', [
+                          Component.text(post.subTitle!),
+                        ]),
+                    ]),
+                    div(classes: 'date', [
+                      Component.text(_formatDate(post.date)),
+                    ]),
+                  ],
+                );
+              }),
+            ],
+          ),
+
+          // Progressive "Show More" Button
+          if (posts.length > 10)
+            const div(classes: 'mt-12 text-center', [
+              button(
+                classes: 'glass-show-more-btn',
+                attributes: {
+                  'onclick':
+                      'var cards = document.querySelectorAll('
+                      "'.appearance-card.hidden-card'); "
+                      'for (var i = 0; i < 10 && i < cards.length; i++) { '
+                      "  cards[i].classList.remove('hidden-card'); "
+                      '} '
+                      'if (document.querySelectorAll('
+                      "'.appearance-card.hidden-card').length === 0) { "
+                      "  this.style.display = 'none'; "
+                      '}',
+                },
+                [Component.text('Show More')],
+              ),
+            ]),
+
+          // Footer
+          const div(classes: 'mt-16 text-center text-sm opacity-60', [
+            Component.text('Source: '),
+            a(
+              href: 'https://github.com/kevmoo/kevmoo.com/',
+              target: Target.blank,
+              attributes: {'rel': 'noopener'},
+              [Component.text('github.com/kevmoo/kevmoo.com')],
+            ),
+          ]),
+        ]),
+      ],
+    );
+  }
+
+  Component _buildSocialLink(String href, String title, String iconClass) {
+    return a(
+      href: href,
+      target: Target.blank,
+      attributes: {'title': title, 'rel': 'me noopener'},
+      [Component.element(tag: 'i', classes: iconClass, children: [])],
+    );
   }
 
   String _formatDate(DateTime date) {
-    final months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+    final year = date.year;
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    return '$year‑$month‑$day'; // Using non-breaking hyphens matching original
   }
 }
