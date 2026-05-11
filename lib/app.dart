@@ -15,13 +15,13 @@ class App extends StatelessComponent {
     // Dynamically compile post routes from our parsed content database
     final postRoutes = content.posts
         .where((post) => post.flavor == content.EntryFlavor.writing)
-        .map((post) {
-          return Route(
+        .map(
+          (post) => Route(
             path: post.permalink,
             title: post.title,
             builder: (context, state) => PostPage(permalink: post.permalink),
-          );
-        })
+          ),
+        )
         .toList();
 
     return div(classes: 'min-h-screen flex flex-col text-slate-700 font-sans', [

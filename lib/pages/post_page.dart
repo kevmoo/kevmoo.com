@@ -96,14 +96,16 @@ class PostPage extends StatelessComponent {
             if (post.tags.isNotEmpty)
               div(
                 classes: 'flex items-center space-x-2',
-                post.tags.map((tag) {
-                  return span(
-                    classes:
-                        'text-xs font-semibold text-slate-400 '
-                        'px-2.5 py-0.5 border border-slate-200 rounded-md',
-                    [Component.text(tag)],
-                  );
-                }).toList(),
+                post.tags
+                    .map(
+                      (tag) => span(
+                        classes:
+                            'text-xs font-semibold text-slate-400 '
+                            'px-2.5 py-0.5 border border-slate-200 rounded-md',
+                        [Component.text(tag)],
+                      ),
+                    )
+                    .toList(),
               ),
           ]),
 
@@ -114,22 +116,22 @@ class PostPage extends StatelessComponent {
       ]),
     ]);
   }
-
-  String _formatDate(DateTime date) {
-    final months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
-  }
 }
+
+String _formatDate(DateTime date) =>
+    '${_months[date.month - 1]} ${date.day}, ${date.year}';
+
+const _months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];

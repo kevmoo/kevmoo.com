@@ -214,14 +214,12 @@ class Home extends StatelessComponent {
     ]);
   }
 
-  Component _buildSocialLink(String href, String title, String iconClass) {
-    return a(
-      href: href,
-      target: Target.blank,
-      attributes: {'title': title, 'rel': 'me noopener'},
-      [Component.element(tag: 'i', classes: iconClass, children: [])],
-    );
-  }
+  Component _buildSocialLink(String href, String title, String iconClass) => a(
+    href: href,
+    target: Target.blank,
+    attributes: {'title': title, 'rel': 'me noopener'},
+    [Component.element(tag: 'i', classes: iconClass, children: [])],
+  );
 
   String _formatDate(DateTime date) {
     final year = date.year;
