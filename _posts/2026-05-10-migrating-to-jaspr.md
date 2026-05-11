@@ -1,8 +1,6 @@
 ---
 title: "Migrating to Jaspr"
 subtitle: "Ruby & Jekyll -> Dart & Jaspr"
-date: 2026-05-10 18:42:32 -07:00
-permalink: /2026/05/migrating-to-jaspr.html
 tags:
   - general
 ---

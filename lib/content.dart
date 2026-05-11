@@ -85,137 +85,12 @@ List<Post> _loadPosts() {
       // Parse YAML Appearance files
       if (file.path.endsWith('.yaml')) {
         final yaml = loadYaml(content) as YamlMap;
-        final title = yaml['title']?.toString() ?? 'Untitled';
-        final subTitle = yaml['subTitle']?.toString();
-        final uri = yaml['uri']?.toString();
-
-        // Parse date
-        DateTime? date;
-        final yamlDate = yaml['date'];
-        if (yamlDate is DateTime) {
-          date = yamlDate;
-        } else if (yamlDate != null) {
-          date = DateTime.tryParse(yamlDate.toString());
-        }
-        date ??= DateTime.now();
-
-        // Parse flavor
-        var flavor = EntryFlavor.youtube;
-        final yamlFlavor = yaml['flavor']?.toString();
-        if (yamlFlavor != null) {
-          try {
-            flavor = EntryFlavor.values.byName(yamlFlavor);
-          } catch (_) {}
-        }
-
-        postsList.add(
-          Post(
-            permalink: '',
-            title: title,
-            subTitle: subTitle,
-            date: date,
-            tags: [],
-            contentHtml: null,
-            isHtml: false,
-            uri: uri,
-            flavor: flavor,
-          ),
-        );
+        postsList.add(_parseYamlPost(file.path, yaml));
         continue;
       }
 
       // Parse Jekyll frontmatter for standard posts
-      if (!content.startsWith('---')) {
-        continue;
-      }
-
-      final parts = content.split('---');
-      if (parts.length < 3) {
-        continue;
-      }
-
-      final frontmatterString = parts[1];
-      final bodyContent = parts.sublist(2).join('---').trim();
-
-      final yaml = loadYaml(frontmatterString) as YamlMap;
-      final title = yaml['title']?.toString() ?? 'Untitled';
-
-      // Parse date
-      DateTime? date;
-      final yamlDate = yaml['date'];
-      if (yamlDate is DateTime) {
-        date = yamlDate;
-      } else if (yamlDate != null) {
-        date = DateTime.tryParse(yamlDate.toString());
-      }
-
-      // Extract date from filename if frontmatter date is missing or invalid
-      final fileDateMatch = RegExp(
-        r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.(md|html)$',
-      ).firstMatch(filename);
-
-      if (date == null && fileDateMatch != null) {
-        final year = int.parse(fileDateMatch.group(1)!);
-        final month = int.parse(fileDateMatch.group(2)!);
-        final day = int.parse(fileDateMatch.group(3)!);
-        date = DateTime(year, month, day);
-      }
-      date ??= DateTime.now();
-
-      // Parse tags
-      final tags = <String>[];
-      final yamlTags = yaml['tags'];
-      if (yamlTags is YamlList) {
-        tags.addAll(yamlTags.map((e) => e.toString()));
-      } else if (yamlTags is List) {
-        tags.addAll(yamlTags.map((e) => e.toString()));
-      }
-
-      // Parse permalink
-      var permalink = yaml['permalink']?.toString();
-      if (permalink == null && fileDateMatch != null) {
-        final year = fileDateMatch.group(1);
-        final month = fileDateMatch.group(2);
-        final titleSlug = fileDateMatch.group(4);
-        permalink = '/$year/$month/$titleSlug.html';
-      }
-      final monthStr = date.month.toString().padLeft(2, '0');
-      final fileSlug = p.basenameWithoutExtension(filename);
-      permalink ??= '/${date.year}/$monthStr/$fileSlug.html';
-
-      if (!permalink.startsWith('/')) {
-        permalink = '/$permalink';
-      }
-
-      final isHtml = file.path.endsWith('.html');
-
-      var contentHtml = '';
-      if (isHtml) {
-        contentHtml = bodyContent;
-      } else {
-        final cleanedBody = bodyContent.replaceAll(
-          RegExp(r'\{:\s*[^}]*\}'),
-          '',
-        );
-        contentHtml = md.markdownToHtml(
-          cleanedBody,
-          extensionSet: md.ExtensionSet.gitHubFlavored,
-        );
-      }
-
-      postsList.add(
-        Post(
-          permalink: permalink,
-          title: title,
-          subTitle: yaml['subtitle']?.toString(),
-          date: date,
-          tags: tags,
-          contentHtml: contentHtml,
-          isHtml: isHtml,
-          uri: null,
-          flavor: EntryFlavor.writing,
-        ),
-      );
+      postsList.add(_parseJekyllPost(file.path, filename, content));
     } catch (e, stack) {
       print('Error parsing file ${file.path}: $e\n$stack');
     }
@@ -224,6 +99,129 @@ List<Post> _loadPosts() {
   // Sort posts chronologically descending
   postsList.sort((a, b) => b.date.compareTo(a.date));
   return postsList;
+}
+
+Post _parseYamlPost(String filePath, YamlMap yaml) {
+  if (yaml case {
+    'title': String title,
+    'subTitle': String subTitle,
+    'uri': String uri,
+    'flavor': String flavorStr,
+    'date': Object dateObj,
+  }) {
+    final date = switch (dateObj) {
+      DateTime d => d,
+      String s =>
+        DateTime.tryParse(s) ??
+            (throw FormatException('Invalid date format: $s in $filePath')),
+      _ => throw FormatException(
+        'Date must be a String or DateTime, got '
+        '${dateObj.runtimeType} in $filePath',
+      ),
+    };
+
+    final flavor = EntryFlavor.values.byName(flavorStr);
+
+    return Post(
+      permalink: '',
+      title: title,
+      subTitle: subTitle,
+      date: date,
+      tags: [],
+      contentHtml: null,
+      isHtml: false,
+      uri: uri,
+      flavor: flavor,
+    );
+  } else {
+    throw FormatException('Invalid YAML structure in $filePath');
+  }
+}
+
+final _fileDateRegExp = RegExp(r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.(md|html)$');
+final _markdownCleanupRegExp = RegExp(r'\{:\s*[^}]*\}');
+
+Post _parseJekyllPost(String filePath, String filename, String content) {
+  if (!content.startsWith('---')) {
+    throw FormatException(
+      'File does not start with Jekyll frontmatter '
+      'delimiter (---) in $filePath',
+    );
+  }
+
+  final parts = content.split('---');
+  if (parts.length < 3) {
+    throw FormatException(
+      'Malformed Jekyll frontmatter (missing closing ---) '
+      'in $filePath',
+    );
+  }
+
+  final frontmatterString = parts[1];
+  final bodyContent = parts.sublist(2).join('---').trim();
+
+  final yaml = loadYaml(frontmatterString) as YamlMap;
+  final title = yaml['title']?.toString() ?? 'Untitled';
+
+  // Extract date from filename
+  final fileDateMatch = _fileDateRegExp.firstMatch(filename);
+  if (fileDateMatch == null) {
+    throw FormatException(
+      'Filename does not start with YYYY-MM-DD prefix in $filePath',
+    );
+  }
+
+  final year = int.parse(fileDateMatch.group(1)!);
+  final month = int.parse(fileDateMatch.group(2)!);
+  final day = int.parse(fileDateMatch.group(3)!);
+  final date = DateTime(year, month, day);
+
+  // Parse tags
+  final tags = <String>[];
+  final yamlTags = yaml['tags'];
+  if (yamlTags is YamlList) {
+    tags.addAll(yamlTags.map((e) => e.toString()));
+  } else if (yamlTags is List) {
+    tags.addAll(yamlTags.map((e) => e.toString()));
+  }
+
+  // Parse permalink
+  var permalink = yaml['permalink']?.toString();
+  if (permalink == null) {
+    final year = fileDateMatch.group(1);
+    final month = fileDateMatch.group(2);
+    final titleSlug = fileDateMatch.group(4);
+    permalink = '/$year/$month/$titleSlug.html';
+  }
+
+  if (!permalink.startsWith('/')) {
+    permalink = '/$permalink';
+  }
+
+  final isHtml = filePath.endsWith('.html');
+
+  var contentHtml = '';
+  if (isHtml) {
+    contentHtml = bodyContent;
+  } else {
+    final cleanedBody = bodyContent.replaceAll(_markdownCleanupRegExp, '');
+    contentHtml = md.markdownToHtml(
+      cleanedBody,
+      extensionSet: md.ExtensionSet.gitHubFlavored,
+    );
+  }
+
+  return Post(
+    permalink: permalink,
+    title: title,
+    subTitle: yaml['subtitle']?.toString(),
+    date: date,
+    tags: tags,
+    contentHtml: contentHtml,
+    isHtml: isHtml,
+    uri: null,
+    flavor: EntryFlavor.writing,
+  );
 }
 
 String generateAtomFeed() {

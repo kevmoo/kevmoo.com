@@ -43,7 +43,6 @@ void main(List<String> args) {
 ---
 title: "$title"
 date: $fullDateStr
-permalink: /$year/$month/$slug.html
 tags:
   - general
 ---
