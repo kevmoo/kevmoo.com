@@ -5,21 +5,54 @@ import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
 import 'constants.dart';
 
+enum EntryFlavor {
+  calendar,
+  youtube,
+  podcast,
+  writing;
+
+  String get awesome {
+    String clazz;
+    String title;
+    switch (this) {
+      case EntryFlavor.youtube:
+        clazz = 'fab fa-youtube fa-2x';
+        title = 'YouTube';
+      case EntryFlavor.podcast:
+        clazz = 'fa fa-podcast fa-2x';
+        title = 'Podcast';
+      case EntryFlavor.calendar:
+        clazz = 'fa fa-calendar fa-2x';
+        title = 'Future event';
+      case EntryFlavor.writing:
+        clazz = 'fa fa-pencil-alt fa-2x';
+        title = 'Writing';
+    }
+    return '<i class="$clazz" title="$title"></i>';
+  }
+}
+
 class Post {
   final String permalink;
   final String title;
+  final String? subTitle;
   final DateTime date;
   final List<String> tags;
-  final String contentHtml;
+  final String? contentHtml;
   final bool isHtml;
+  final String? uri;
+  final EntryFlavor flavor;
 
   Post({
     required this.permalink,
     required this.title,
+    this.subTitle,
     required this.date,
     required this.tags,
-    required this.contentHtml,
+    this.contentHtml,
     required this.isHtml,
+    this.uri,
+    required this.flavor,
   });
 }
 
@@ -36,7 +69,12 @@ List<Post> _loadPosts() {
   final files = dir
       .listSync()
       .whereType<File>()
-      .where((f) => f.path.endsWith('.md') || f.path.endsWith('.html'))
+      .where(
+        (f) =>
+            f.path.endsWith('.md') ||
+            f.path.endsWith('.html') ||
+            f.path.endsWith('.yaml'),
+      )
       .toList();
 
   for (final file in files) {
@@ -44,7 +82,49 @@ List<Post> _loadPosts() {
       final filename = p.basename(file.path);
       final content = file.readAsStringSync();
 
-      // Parse Jekyll frontmatter
+      // Parse YAML Appearance files
+      if (file.path.endsWith('.yaml')) {
+        final yaml = loadYaml(content) as YamlMap;
+        final title = yaml['title']?.toString() ?? 'Untitled';
+        final subTitle = yaml['subTitle']?.toString();
+        final uri = yaml['uri']?.toString();
+
+        // Parse date
+        DateTime? date;
+        final yamlDate = yaml['date'];
+        if (yamlDate is DateTime) {
+          date = yamlDate;
+        } else if (yamlDate != null) {
+          date = DateTime.tryParse(yamlDate.toString());
+        }
+        date ??= DateTime.now();
+
+        // Parse flavor
+        EntryFlavor flavor = EntryFlavor.youtube;
+        final yamlFlavor = yaml['flavor']?.toString();
+        if (yamlFlavor != null) {
+          try {
+            flavor = EntryFlavor.values.byName(yamlFlavor);
+          } catch (_) {}
+        }
+
+        postsList.add(
+          Post(
+            permalink: '',
+            title: title,
+            subTitle: subTitle,
+            date: date,
+            tags: [],
+            contentHtml: null,
+            isHtml: false,
+            uri: uri,
+            flavor: flavor,
+          ),
+        );
+        continue;
+      }
+
+      // Parse Jekyll frontmatter for standard posts
       if (!content.startsWith('---')) {
         continue;
       }
@@ -70,7 +150,6 @@ List<Post> _loadPosts() {
       }
 
       // Extract date from filename if frontmatter date is missing or invalid
-      // Jekyll filename format: YYYY-MM-DD-title.ext
       final fileDateMatch = RegExp(
         r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.(md|html)$',
       ).firstMatch(filename);
@@ -104,20 +183,16 @@ List<Post> _loadPosts() {
       final fileSlug = p.basenameWithoutExtension(filename);
       permalink ??= '/${date.year}/$monthStr/$fileSlug.html';
 
-      // Ensure permalink starts with a slash and has no trailing slash
       if (!permalink.startsWith('/')) {
         permalink = '/$permalink';
       }
 
       final isHtml = file.path.endsWith('.html');
 
-      // Compile body markdown to HTML if needed
       var contentHtml = '';
       if (isHtml) {
         contentHtml = bodyContent;
       } else {
-        // Clean up kramdown attributes like {: width='650' ... }
-        // to prevent rendering issues in the standard markdown library
         final cleanedBody = bodyContent.replaceAll(
           RegExp(r'\{:\s*[^}]*\}'),
           '',
@@ -132,10 +207,13 @@ List<Post> _loadPosts() {
         Post(
           permalink: permalink,
           title: title,
+          subTitle: yaml['subtitle']?.toString(),
           date: date,
           tags: tags,
           contentHtml: contentHtml,
           isHtml: isHtml,
+          uri: null,
+          flavor: EntryFlavor.writing,
         ),
       );
     } catch (e, stack) {
@@ -149,7 +227,10 @@ List<Post> _loadPosts() {
 }
 
 String generateAtomFeed() {
-  final lastPostDate = posts.isNotEmpty ? posts.first.date : DateTime.now();
+  final writings = posts.where((p) => p.flavor == EntryFlavor.writing).toList();
+  final lastPostDate = writings.isNotEmpty
+      ? writings.first.date
+      : DateTime.now();
   final updatedStr = _formatIso8601(lastPostDate);
 
   final builder = XmlBuilder();
@@ -184,7 +265,7 @@ String generateAtomFeed() {
       builder.element('title', attributes: {'type': 'html'}, nest: siteTitle);
       builder.element('subtitle', nest: siteSubtitle);
 
-      for (final post in posts) {
+      for (final post in writings) {
         final postDateStr = _formatIso8601(post.date);
         final permalinkUrl = '$siteUrl${post.permalink}';
 
@@ -211,7 +292,7 @@ String generateAtomFeed() {
             builder.element(
               'content',
               attributes: {'type': 'html', 'xml:base': permalinkUrl},
-              nest: post.contentHtml,
+              nest: post.contentHtml ?? '',
             );
             builder.element(
               'author',
@@ -238,7 +319,6 @@ String generateSitemap() {
     'urlset',
     attributes: {'xmlns': 'http://www.sitemaps.org/schemas/sitemap/0.9'},
     nest: () {
-      // Home page
       builder.element(
         'url',
         nest: () {
@@ -247,7 +327,6 @@ String generateSitemap() {
           builder.element('priority', nest: '1.0');
         },
       );
-      // About page
       builder.element(
         'url',
         nest: () {
@@ -257,7 +336,10 @@ String generateSitemap() {
         },
       );
 
-      for (final post in posts) {
+      final writings = posts
+          .where((p) => p.flavor == EntryFlavor.writing)
+          .toList();
+      for (final post in writings) {
         final postDateStr = post.date.toIso8601String().substring(0, 10);
         builder.element(
           'url',

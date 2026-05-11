@@ -15,13 +15,16 @@ class App extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     // Dynamically compile post routes from our parsed content database
-    final postRoutes = content.posts.map((post) {
-      return Route(
-        path: post.permalink,
-        title: post.title,
-        builder: (context, state) => PostPage(permalink: post.permalink),
-      );
-    }).toList();
+    final postRoutes = content.posts
+        .where((post) => post.flavor == content.EntryFlavor.writing)
+        .map((post) {
+          return Route(
+            path: post.permalink,
+            title: post.title,
+            builder: (context, state) => PostPage(permalink: post.permalink),
+          );
+        })
+        .toList();
 
     return div(classes: 'min-h-screen flex flex-col text-slate-700 font-sans', [
       const Header(),
