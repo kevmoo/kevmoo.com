@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/server.dart';
 
 import 'app.dart';
+import 'constants.dart';
 import 'main.server.options.dart';
 
 void main() {
@@ -36,6 +37,27 @@ void main() {
               gtag('js', new Date());
               gtag('config', 'UA-3441863-3');'''),
           ],
+        ),
+        // Auto-discovery SEO links for Sitemap and RSS/Atom feed
+        Component.element(
+          tag: 'link',
+          attributes: {
+            'rel': 'alternate',
+            'type': 'application/atom+xml',
+            'href': '/feed.xml',
+            'title': siteTitle,
+          },
+          children: [],
+        ),
+        Component.element(
+          tag: 'link',
+          attributes: {
+            'rel': 'sitemap',
+            'type': 'application/xml',
+            'href': '/sitemap.xml',
+            'title': 'Sitemap',
+          },
+          children: [],
         ),
         // Stylesheets loaded as standard link tags to comply with strict CSP
         Component.element(
