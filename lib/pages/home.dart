@@ -149,7 +149,18 @@ class Home extends StatelessComponent {
                               href: linkUrl,
                               target: isWriting ? null : Target.blank,
                               attributes: isWriting ? {} : {'rel': 'noopener'},
-                              [Component.text(post.title)],
+                              [
+                                Component.text(post.title.trim()),
+                                if (!isWriting) ...[
+                                  RawText('&nbsp;'),
+                                  Component.element(
+                                    tag: 'i',
+                                    classes:
+                                        'fa fa-external-link-alt text-sm opacity-50',
+                                    children: [],
+                                  ),
+                                ],
+                              ],
                             ),
                           ]),
                           if (post.subTitle != null &&

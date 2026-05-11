@@ -1,3 +1,1 @@
-- consider redirecting to blog.kevmoo.com
 - consider doing a clean-up pass of the existing content into a standardized format
-- consider merging personal site content
