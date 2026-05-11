@@ -99,59 +99,90 @@ class Home extends StatelessComponent {
               classes: 'flex flex-col gap-4',
               attributes: {'id': 'appearance-list'},
               children: [
-                ...posts.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final post = entry.value;
-                  final isWriting = post.flavor == content.EntryFlavor.writing;
-                  final linkUrl = isWriting ? post.permalink : (post.uri ?? '');
+                ...() {
+                  final list = <Component>[];
+                  for (var i = 0; i < posts.length; i++) {
+                    final post = posts[i];
+                    final postYear = post.date.year;
 
-                  return div(
-                    classes:
-                        'glass-card appearance-card '
-                        '${index >= 10 ? 'hidden-card' : ''}',
-                    [
-                      div(classes: 'icon', [RawText(post.flavor.awesome)]),
-                      div(classes: 'details', [
-                        div(classes: 'title', [
-                          a(
-                            href: linkUrl,
-                            target: isWriting ? null : Target.blank,
-                            attributes: isWriting ? {} : {'rel': 'noopener'},
-                            [Component.text(post.title)],
-                          ),
-                        ]),
-                        if (post.subTitle != null && post.subTitle!.isNotEmpty)
-                          div(classes: 'subtitle', [
-                            Component.text(post.subTitle!),
+                    if (i > 0) {
+                      final prevYear = posts[i - 1].date.year;
+                      if (postYear < prevYear) {
+                        final isHidden = i >= 10;
+                        final markerClasses =
+                            'year-marker flex items-center gap-4 pt-10 pb-4 '
+                            '${isHidden ? 'hidden-card' : ''}';
+                        list.add(
+                          div(classes: markerClasses, [
+                            span(
+                              classes:
+                                  'text-sky-400/90 font-black tracking-widest text-lg',
+                              [Component.text('$postYear')],
+                            ),
+                            const div(
+                              classes:
+                                  'flex-grow h-[1px] bg-gradient-to-r '
+                                  'from-sky-500/30 via-sky-500/10 to-transparent',
+                              [],
+                            ),
                           ]),
+                        );
+                      }
+                    }
+
+                    final isWriting =
+                        post.flavor == content.EntryFlavor.writing;
+                    final linkUrl = isWriting
+                        ? post.permalink
+                        : (post.uri ?? '');
+                    final isHidden = i >= 10;
+                    final cardClasses =
+                        'glass-card appearance-card '
+                        '${isHidden ? 'hidden-card' : ''}';
+
+                    list.add(
+                      div(classes: cardClasses, [
+                        div(classes: 'icon', [RawText(post.flavor.awesome)]),
+                        div(classes: 'details', [
+                          div(classes: 'title', [
+                            a(
+                              href: linkUrl,
+                              target: isWriting ? null : Target.blank,
+                              attributes: isWriting ? {} : {'rel': 'noopener'},
+                              [Component.text(post.title)],
+                            ),
+                          ]),
+                          if (post.subTitle != null &&
+                              post.subTitle!.isNotEmpty)
+                            div(classes: 'subtitle', [
+                              Component.text(post.subTitle!),
+                            ]),
+                        ]),
+                        div(classes: 'date', [
+                          Component.text(_formatDate(post.date)),
+                        ]),
                       ]),
-                      div(classes: 'date', [
-                        Component.text(_formatDate(post.date)),
-                      ]),
-                    ],
-                  );
-                }),
+                    );
+                  }
+                  return list;
+                }(),
               ],
             ),
 
             // Progressive "Show More" Button
             if (posts.length > 10)
-              const div(classes: 'mt-12 text-center', [
-                button(
-                  classes: 'glass-show-more-btn',
-                  attributes: {
-                    'onclick':
-                        'var cards = document.querySelectorAll('
-                        "'.appearance-card.hidden-card'); "
-                        'for (var i = 0; i < 10 && i < cards.length; i++) { '
-                        "  cards[i].classList.remove('hidden-card'); "
-                        '} '
-                        'if (document.querySelectorAll('
-                        "'.appearance-card.hidden-card').length === 0) { "
-                        "  this.style.display = 'none'; "
-                        '}',
-                  },
-                  [Component.text('Show More')],
+              const Component.fragment([
+                div(classes: 'mt-12 text-center', [
+                  button(
+                    classes: 'glass-show-more-btn',
+                    attributes: {'id': 'show-more-btn'},
+                    [Component.text('Show More')],
+                  ),
+                ]),
+                Component.element(
+                  tag: 'script',
+                  attributes: {'nonce': 'okoboji'},
+                  children: [_buttonScript],
                 ),
               ]),
 
@@ -187,3 +218,20 @@ class Home extends StatelessComponent {
     return '$year‑$month‑$day'; // Using non-breaking hyphens matching original
   }
 }
+
+const _buttonScript = RawText('''
+(function() {
+  var btn = document.getElementById('show-more-btn');
+  if (btn) {
+    btn.addEventListener('click', function() {
+      var elements = document.querySelectorAll('#appearance-list > .hidden-card');
+      for (var i = 0; i < 10 && i < elements.length; i++) {
+        elements[i].classList.remove('hidden-card');
+      }
+      if (document.querySelectorAll('#appearance-list > .hidden-card').length === 0) {
+        btn.style.display = 'none';
+      }
+    });
+  }
+})();
+''');
