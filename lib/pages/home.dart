@@ -152,11 +152,12 @@ class Home extends StatelessComponent {
                               [
                                 Component.text(post.title.trim()),
                                 if (!isWriting) ...[
-                                  RawText('&nbsp;'),
-                                  Component.element(
+                                  const RawText('&nbsp;'),
+                                  const Component.element(
                                     tag: 'i',
                                     classes:
-                                        'fa fa-external-link-alt text-sm opacity-50',
+                                        'fa fa-external-link-alt text-sm '
+                                        'opacity-50',
                                     children: [],
                                   ),
                                 ],
