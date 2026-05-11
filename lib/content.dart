@@ -56,7 +56,7 @@ class Post {
   });
 }
 
-final List<Post> posts = _loadPosts();
+List<Post> get posts => _loadPosts();
 
 List<Post> _loadPosts() {
   final postsList = <Post>[];

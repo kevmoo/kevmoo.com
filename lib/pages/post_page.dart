@@ -45,6 +45,7 @@ class PostPage extends StatelessComponent {
     }
 
     final dateString = _formatDate(post.date);
+    final hasSubtitle = post.subTitle != null && post.subTitle!.isNotEmpty;
 
     return Component.fragment([
       Document.head(
@@ -81,9 +82,17 @@ class PostPage extends StatelessComponent {
             h1(
               classes:
                   'text-3xl md:text-4xl font-black tracking-tight '
-                  'text-slate-950 leading-tight mb-6',
+                  'text-slate-950 leading-tight '
+                  '${hasSubtitle ? 'mb-3' : 'mb-6'}',
               [Component.text(post.title)],
             ),
+            if (post.subTitle != null && post.subTitle!.isNotEmpty)
+              p(
+                classes:
+                    'text-lg md:text-xl text-slate-500 dark:text-slate-400 '
+                    'font-medium leading-relaxed mb-6 italic',
+                [Component.text(post.subTitle!)],
+              ),
             if (post.tags.isNotEmpty)
               div(
                 classes: 'flex items-center space-x-2',
