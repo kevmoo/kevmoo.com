@@ -8,7 +8,7 @@ void main() {
   Jaspr.initializeApp(options: defaultServerOptions);
 
   runApp(
-    Document(
+    const Document(
       title: 'kevmoo @ Work',
       meta: {
         'description':
@@ -18,7 +18,7 @@ void main() {
       },
       head: [
         // Google Analytics (gtag.js)
-        const Component.element(
+        Component.element(
           tag: 'script',
           attributes: {
             'async': '',
@@ -26,8 +26,9 @@ void main() {
           },
           children: [],
         ),
-        const Component.element(
+        Component.element(
           tag: 'script',
+          attributes: {'nonce': 'okoboji'},
           children: [
             RawText('''
               window.dataLayer = window.dataLayer || [];
@@ -36,20 +37,36 @@ void main() {
               gtag('config', 'UA-3441863-3');'''),
           ],
         ),
-      ],
-      styles: [
-        css.import(
-          'https://fonts.googleapis.com/css2?'
-          'family=Inter:wght@300;400;500;600;700;800;900'
-          '&family=Roboto+Slab:wght@300;400;600&display=swap',
+        // Stylesheets loaded as standard link tags to comply with strict CSP
+        Component.element(
+          tag: 'link',
+          attributes: {
+            'rel': 'stylesheet',
+            'href':
+                'https://fonts.googleapis.com/css2?'
+                'family=Inter:wght@300;400;500;600;700;800;900'
+                '&family=Roboto+Slab:wght@300;400;600&display=swap',
+          },
+          children: [],
         ),
-        css.import(
-          'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css',
+        Component.element(
+          tag: 'link',
+          attributes: {
+            'rel': 'stylesheet',
+            'href':
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/'
+                '7.0.1/css/all.min.css',
+          },
+          children: [],
         ),
-        // Include local Tailwind stylesheet
-        css.import('/styles.css'),
+        Component.element(
+          tag: 'link',
+          attributes: {'rel': 'stylesheet', 'href': '/styles.css'},
+          children: [],
+        ),
       ],
-      body: const App(),
+      styles: [],
+      body: App(),
     ),
   );
 }
