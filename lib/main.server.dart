@@ -6,7 +6,10 @@ import 'constants.dart';
 import 'main.server.options.dart';
 
 void main() {
-  Jaspr.initializeApp(options: defaultServerOptions);
+  Jaspr.initializeApp(
+    options: defaultServerOptions,
+    allowedPathSuffixes: ['html', 'htm', 'xml', 'css'],
+  );
 
   runApp(
     const Document(
