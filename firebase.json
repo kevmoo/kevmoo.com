@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "predeploy": "dart run tool/build.dart",
+    "predeploy": "dart pub global run jaspr_cli:jaspr build",
     "site": "work-j832",
     "public": "build/jaspr",
     "cleanUrls": true,
