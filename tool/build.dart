@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:work_j832_com/content.dart' as content;
 
 void main() async {
   print('=== Starting Production Build ===');
@@ -21,17 +20,7 @@ void main() async {
   }
   print('Tailwind CSS compiled successfully.');
 
-  // 2. Generate sitemaps and feeds inside the source web directory
-  // (for dev server support)
-  print('Generating RSS/Atom feed (feed.xml)...');
-  File('web/feed.xml').writeAsStringSync(content.generateAtomFeed());
-  print('Atom feed generated successfully.');
-
-  print('Generating sitemap (sitemap.xml)...');
-  File('web/sitemap.xml').writeAsStringSync(content.generateSitemap());
-  print('Sitemap generated successfully.');
-
-  // 3. Build Jaspr Static Site (automatically bundles all web/ assets to build/jaspr)
+  // 2. Build Jaspr Static Site (automatically bundles all web/ assets to build/jaspr)
   print('Building Jaspr static site...');
   final jasprResult = await Process.run('dart', [
     'pub',
