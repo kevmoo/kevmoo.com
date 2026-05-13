@@ -284,6 +284,14 @@
   display: none !important;
 }
 
+.tag-filtered {
+  display: none !important;
+}
+
+.tag-matched {
+  display: grid !important;
+}
+
 @media only screen and (max-width: 600px) {
   .glass-theme h1 {
     font-size: 2.5rem;
