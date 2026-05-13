@@ -1,6 +1,5 @@
 name: work_j832_com
 description: kevmoo @ Work blog migrated to Dart and Jaspr
-version: 1.0.0
 publish_to: none
 
 environment:

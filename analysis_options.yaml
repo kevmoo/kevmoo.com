@@ -10,7 +10,8 @@ linter:
   rules:
     - always_declare_return_types
     - avoid_dynamic_calls
+    - prefer_expression_function_bodies
     - prefer_single_quotes
+    - simple_directive_paths
     - unawaited_futures
     - unnecessary_ignore
-    - prefer_expression_function_bodies
