@@ -208,6 +208,7 @@ Post _parseJekyllPost(String filePath, String filename, String content) {
     contentHtml = md.markdownToHtml(
       cleanedBody,
       extensionSet: md.ExtensionSet.gitHubFlavored,
+      blockSyntaxes: const [md.AlertBlockSyntax()],
     );
   }
 
