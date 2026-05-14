@@ -1,5 +1,6 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import '../content.dart' as content;
 
 class Footer extends StatelessComponent {
   const Footer({super.key});
@@ -17,18 +18,21 @@ class Footer extends StatelessComponent {
               'text-xs text-slate-400',
           [
             p([Component.text('© $currentYear Kevin Moore.')]),
-            const div(classes: 'flex space-x-6 font-medium', [
-              a(
-                href: '/feed.xml',
-                classes: 'hover:text-orange-500 transition-colors',
-                [Component.text('RSS')],
-              ),
-              a(
-                href: 'https://github.com/kevmoo',
-                target: Target.blank,
-                classes: 'hover:text-slate-900 transition-colors',
-                [Component.text('GitHub')],
-              ),
+            div(classes: 'flex items-center space-x-6 text-slate-400', [
+              for (final link in content.socialLinks)
+                a(
+                  href: link.href,
+                  target: Target.blank,
+                  classes: 'hover:text-sky-500 transition-colors',
+                  attributes: {'title': link.title, 'rel': 'me noopener'},
+                  [
+                    Component.element(
+                      tag: 'i',
+                      classes: '${link.iconClass} text-lg',
+                      children: [],
+                    ),
+                  ],
+                ),
             ]),
           ],
         ),

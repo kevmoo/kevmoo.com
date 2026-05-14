@@ -56,41 +56,12 @@ class Home extends StatelessComponent {
                 ]),
                 // Social profile animated strips
                 div(classes: 'profiles', [
-                  _buildSocialLink(
-                    'https://bsky.app/profile/kevmoo.com',
-                    'Bluesky @kevmoo.com',
-                    'fab fa-bluesky fa-2x',
-                  ),
-                  _buildSocialLink(
-                    'https://github.com/kevmoo/',
-                    'GitHub/kevmoo',
-                    'fab fa-github fa-2x',
-                  ),
-                  _buildSocialLink(
-                    'https://mastodon.social/@kevmoo',
-                    'mastodon.social/@kevmoo',
-                    'fab fa-mastodon fa-2x',
-                  ),
-                  _buildSocialLink(
-                    'https://www.linkedin.com/in/kevmoo/',
-                    'LinkedIn/kevmoo',
-                    'fab fa-linkedin fa-2x',
-                  ),
-                  _buildSocialLink(
-                    'https://www.reddit.com/user/kevmoo',
-                    'Reddit/kevmoo',
-                    'fab fa-reddit fa-2x',
-                  ),
-                  _buildSocialLink(
-                    'https://g.dev/kevmoo',
-                    'Google Developers',
-                    'fab fa-google fa-2x',
-                  ),
-                  _buildSocialLink(
-                    'https://twitter.com/kevmoo',
-                    'Twitter @kevmoo',
-                    'fab fa-twitter fa-2x',
-                  ),
+                  for (final link in content.socialLinks)
+                    _buildSocialLink(
+                      link.href,
+                      link.title,
+                      '${link.iconClass} fa-2x',
+                    ),
                 ]),
               ],
             ),
