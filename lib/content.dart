@@ -102,8 +102,7 @@ List<Post> _loadPosts() {
   final postsList = <Post>[];
   final dir = Directory('_posts');
   if (!dir.existsSync()) {
-    print('WARNING: _posts directory not found.');
-    return [];
+    throw Exception('Error: _posts directory not found.');
   }
 
   final files = dir
