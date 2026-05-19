@@ -9,7 +9,8 @@ enum EntryFlavor {
   calendar,
   youtube,
   podcast,
-  writing;
+  writing,
+  link;
 
   String get awesome {
     String clazz;
@@ -27,6 +28,9 @@ enum EntryFlavor {
       case EntryFlavor.writing:
         clazz = 'fa fa-pencil-alt fa-2x';
         title = 'Writing';
+      case EntryFlavor.link:
+        clazz = 'fa fa-link fa-2x';
+        title = 'Link';
     }
     return '<i class="$clazz" title="$title"></i>';
   }

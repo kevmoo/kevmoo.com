@@ -38,6 +38,35 @@ void main() {
       check(unifiedTechStack.date.year).equals(2026);
       check(unifiedTechStack.date.month).equals(4);
       check(unifiedTechStack.date.day).equals(24);
+
+      // Check the new link appearances
+      final firebaseAnnounce = posts.firstWhere(
+        (p) =>
+            p.title ==
+            'Announcing Dart support in Cloud Functions for Firebase',
+      );
+      check(firebaseAnnounce.subTitle).equals('Firebase Blog');
+      check(
+        firebaseAnnounce.uri,
+      ).equals('https://firebase.blog/posts/2026/05/dart-functions-exp');
+      check(firebaseAnnounce.flavor).equals(EntryFlavor.link);
+      check(firebaseAnnounce.date.year).equals(2026);
+      check(firebaseAnnounce.date.month).equals(5);
+      check(firebaseAnnounce.date.day).equals(6);
+
+      final dartBlogMissingLink = posts.firstWhere(
+        (p) =>
+            p.title ==
+            'The Flutter missing link: Why full-stack Dart changes everything',
+      );
+      check(dartBlogMissingLink.subTitle).equals('The Dart Blog');
+      check(dartBlogMissingLink.uri).equals(
+        'https://dart.dev/blog/flutter-missing-link-why-full-stack-dart-changes-everything',
+      );
+      check(dartBlogMissingLink.flavor).equals(EntryFlavor.link);
+      check(dartBlogMissingLink.date.year).equals(2026);
+      check(dartBlogMissingLink.date.month).equals(5);
+      check(dartBlogMissingLink.date.day).equals(18);
     });
 
     test('Verify blog posts parse correctly as writings', () {
