@@ -81,14 +81,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.1"
-  build_modules:
-    dependency: transitive
-    description:
-      name: build_modules
-      sha256: "63c56d2663da4bba51c56825169a5356dd8401240241217c8eba711b2e12be5c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.1.12"
   build_runner:
     dependency: "direct dev"
     description:
@@ -101,10 +93,10 @@ packages:
     dependency: "direct dev"
     description:
       name: build_web_compilers
-      sha256: "8a8a3d18b6b341df6dc61a65beaabc89fcd7c68dc10b02777fc31a35ffb6efa4"
+      sha256: "8da0c6e1e2edaa13601846c0b4782e133a14dc4861932f561e3919f4aba460d1"
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.19"
+    version: "4.6.0"
   built_collection:
     dependency: transitive
     description:
@@ -325,10 +317,10 @@ packages:
     dependency: transitive
     description:
       name: json_annotation
-      sha256: cb09e7dac6210041fad964ed7fbee004f14258b4eca4040f72d1234062ace4c8
+      sha256: "2a743920d81b7910627f68ee2c9ac1fc0bfee32b9fc3403587d7c6791ca12f80"
       url: "https://pub.dev"
     source: hosted
-    version: "4.11.0"
+    version: "4.12.0"
   lints:
     dependency: transitive
     description:
@@ -453,10 +445,10 @@ packages:
     dependency: transitive
     description:
       name: scratch_space
-      sha256: "3417e014d20b12cebc5bfb1c0b1f63806054177158596cc31cc4d9aaca767a60"
+      sha256: "564e4d0cef547454171ce97b1ea3ec70fa9bc5b3b9db896a620dd5930dc5e8b8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.1"
   shelf:
     dependency: transitive
     description:
