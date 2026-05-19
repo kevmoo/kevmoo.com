@@ -3,3 +3,6 @@ subTitle: "GOSIM China 2024"
 uri: "https://www.youtube.com/watch?v=vbcPv0kiRdU"
 date: 2024-10-17
 flavor: youtube
+tags:
+  - Flutter
+  - Dart

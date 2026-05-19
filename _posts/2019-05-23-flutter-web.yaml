@@ -3,3 +3,7 @@ subTitle: "It's All Widgets"
 uri: "https://itsallwidgets.com/podcast/episodes/27/kevin-moore"
 date: 2019-05-23
 flavor: podcast
+tags:
+  - Flutter
+  - Dart
+  - web

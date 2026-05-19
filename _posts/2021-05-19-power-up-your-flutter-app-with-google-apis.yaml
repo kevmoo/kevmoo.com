@@ -3,3 +3,7 @@ subTitle: "Google I/O"
 uri: "https://www.youtube.com/watch?v=z4MsuZiEezY"
 date: 2021-05-19
 flavor: youtube
+tags:
+  - Flutter
+  - Dart
+  - Google

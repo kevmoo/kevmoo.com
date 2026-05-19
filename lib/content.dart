@@ -165,12 +165,20 @@ Post _parseYamlPost(String filePath, YamlMap yaml) {
 
     final flavor = EntryFlavor.values.byName(flavorStr);
 
+    final tags = <String>[];
+    final yamlTags = yaml['tags'] ?? yaml['topics'];
+    if (yamlTags is YamlList) {
+      tags.addAll(yamlTags.map((e) => e.toString()));
+    } else if (yamlTags is List) {
+      tags.addAll(yamlTags.map((e) => e.toString()));
+    }
+
     return Post(
       permalink: '',
       title: title,
       subTitle: subTitle,
       date: date,
-      tags: [],
+      tags: tags,
       contentHtml: null,
       isHtml: false,
       uri: uri,

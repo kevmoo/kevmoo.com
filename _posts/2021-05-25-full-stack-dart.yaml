@@ -3,3 +3,5 @@ subTitle: "Google Cloud Platform Podcast"
 uri: "https://www.gcppodcast.com/post/episode-261-full-stack-dart-with-tony-pujals-and-kevin-moore/"
 date: 2021-05-25
 flavor: podcast
+tags:
+  - Dart

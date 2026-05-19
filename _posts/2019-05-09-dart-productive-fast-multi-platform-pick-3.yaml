@@ -3,3 +3,5 @@ subTitle: "Google I/O"
 uri: "https://www.youtube.com/watch?v=J5DQRPRBiFI"
 date: 2019-05-09
 flavor: youtube
+tags:
+  - Dart

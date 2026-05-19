@@ -1,6 +1,9 @@
 ---
 layout: post
 title: 'Hello, GitHub!'
+tags:
+- Git
+- personal
 ---
 
 As I [posted](https://plus.google.com/+KevinMoore314/posts/GqaQTKm7EdJ) and

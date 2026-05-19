@@ -3,3 +3,7 @@ subTitle: "Firebase Blog"
 uri: "https://firebase.blog/posts/2026/05/dart-functions-exp"
 date: 2026-05-06
 flavor: link
+tags:
+  - Dart
+  - Firebase
+  - Google

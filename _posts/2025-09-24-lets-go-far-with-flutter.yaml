@@ -3,3 +3,6 @@ subTitle: "fluttercon EU"
 uri: "https://www.youtube.com/watch?v=lgG3O_sScqU"
 date: 2025-09-24
 flavor: youtube
+tags:
+  - Flutter
+  - Dart

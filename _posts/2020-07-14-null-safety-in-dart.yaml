@@ -3,3 +3,5 @@ subTitle: "Flutter Day 2020"
 uri: "https://www.youtube.com/watch?v=W4IpdomZb6g"
 date: 2020-07-14
 flavor: youtube
+tags:
+  - Dart

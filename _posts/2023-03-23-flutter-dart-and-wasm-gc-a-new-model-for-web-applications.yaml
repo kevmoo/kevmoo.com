@@ -3,3 +3,8 @@ subTitle: "Wasm I/O"
 uri: "https://www.youtube.com/watch?v=Nkjc9r0WDNo"
 date: 2023-03-23
 flavor: youtube
+tags:
+  - Flutter
+  - Dart
+  - wasm
+  - web

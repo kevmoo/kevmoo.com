@@ -3,3 +3,7 @@ subTitle: "Flying High with Flutter"
 uri: "https://www.youtube.com/watch?v=-JAej7KKTUQ"
 date: 2024-11-27
 flavor: youtube
+tags:
+  - Flutter
+  - Dart
+  - web

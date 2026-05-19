@@ -3,3 +3,7 @@ subTitle: "The Dart Blog"
 uri: "https://dart.dev/blog/flutter-missing-link-why-full-stack-dart-changes-everything"
 date: 2026-05-18
 flavor: link
+tags:
+  - Flutter
+  - Dart
+  - web
