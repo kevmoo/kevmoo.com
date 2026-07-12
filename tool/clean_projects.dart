@@ -1,4 +1,6 @@
 import 'dart:io';
+
+import 'package:work_j832_com/server/content_parser.dart';
 import 'package:yaml/yaml.dart';
 
 void main() {
@@ -15,11 +17,15 @@ void main() {
     final content = file.readAsStringSync();
     if (!content.startsWith('---')) continue;
 
-    final parts = content.split('---');
-    if (parts.length < 3) continue;
+    final ParsedContent parsed;
+    try {
+      parsed = parseFrontmatterString(content, requireFrontmatter: true);
+    } catch (_) {
+      continue;
+    }
 
-    final yamlMap = loadYaml(parts[1]) as YamlMap;
-    final bodyContent = parts.sublist(2).join('---').trim();
+    final yamlMap = parsed.frontmatter;
+    final bodyContent = parsed.bodyMarkdown;
 
     final pubPkg = yamlMap['pub_package']?.toString();
     final lines = <String>['---'];
