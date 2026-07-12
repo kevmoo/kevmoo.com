@@ -549,7 +549,7 @@
 }
 
 @utility project-links {
-  @apply flex items-center gap-4 font-sans font-semibold text-blue-600 dark:text-blue-400;
+  @apply flex items-center gap-4 font-sans font-semibold text-blue-600 dark:text-blue-400 ml-auto;
 }
 
 @utility year-marker-container {
