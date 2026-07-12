@@ -27,6 +27,14 @@ This is the body.
       check(parsed.bodyMarkdown).equals(content);
     });
 
+    test('Parse optional frontmatter when content is just delimiters '
+        'without newline', () {
+      const content = '---';
+      final parsed = parseFrontmatterString(content, requireFrontmatter: false);
+      check(parsed.frontmatter).isEmpty();
+      check(parsed.bodyMarkdown).equals(content);
+    });
+
     test('Throw on missing frontmatter when requireFrontmatter is true', () {
       const content = 'This is just markdown without frontmatter.';
       check(

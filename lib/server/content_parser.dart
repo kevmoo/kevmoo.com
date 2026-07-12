@@ -64,7 +64,7 @@ ParsedContent parseFrontmatterString(
     }
     return ParsedContent(
       frontmatter: YamlMap.wrap(const {}),
-      bodyMarkdown: '',
+      bodyMarkdown: content,
       blockSyntaxes: blockSyntaxes,
     );
   }
