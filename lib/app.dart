@@ -12,8 +12,14 @@ import 'pages/static_outputs.dart';
 class App extends StatelessComponent {
   final List<Post> posts;
   final List<Project> projects;
+  final String aboutContentHtml;
 
-  const App({required this.posts, required this.projects, super.key});
+  const App({
+    required this.posts,
+    required this.projects,
+    required this.aboutContentHtml,
+    super.key,
+  });
 
   @override
   Component build(BuildContext context) {
@@ -40,7 +46,7 @@ class App extends StatelessComponent {
           Route(
             path: '/about',
             title: 'About | kevmoo @ Work',
-            builder: (context, state) => const About(),
+            builder: (context, state) => About(contentHtml: aboutContentHtml),
           ),
           Route(
             path: '/projects',

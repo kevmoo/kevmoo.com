@@ -93,7 +93,11 @@ void main() {
         ),
       ],
       styles: const [],
-      body: App(posts: content.posts, projects: projects_content.projects),
+      body: App(
+        posts: content.posts,
+        projects: projects_content.projects,
+        aboutContentHtml: content.loadAboutContent(),
+      ),
     ),
   );
 }

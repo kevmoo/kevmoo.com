@@ -303,3 +303,15 @@ String generateSitemap() {
 }
 
 String _formatIso8601(DateTime date) => date.toUtc().toIso8601String();
+
+String loadAboutContent() {
+  try {
+    final file = File('_pages/about.md');
+    if (file.existsSync()) {
+      return parseFrontmatterFile(file).bodyHtml;
+    }
+  } catch (e) {
+    print('Error loading about.md: $e');
+  }
+  return '';
+}

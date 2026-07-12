@@ -1,29 +1,19 @@
-import 'dart:io';
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
 import '../components/footer.dart';
 import '../components/header.dart';
 import '../constants.dart';
-import '../server/content_parser.dart';
 
 class About extends StatelessComponent {
-  const About({super.key});
+  final String contentHtml;
+
+  const About({required this.contentHtml, super.key});
 
   @override
   Component build(BuildContext context) {
-    var pageTitle = 'About';
-    var pageContentHtml = '';
-
-    try {
-      final file = File('_pages/about.md');
-      if (file.existsSync()) {
-        final parsed = parseFrontmatterFile(file);
-        pageContentHtml = parsed.bodyHtml;
-      }
-    } catch (e) {
-      print('Error loading about.md: $e');
-    }
+    const pageTitle = 'About';
+    var pageContentHtml = contentHtml;
 
     if (pageContentHtml.isEmpty) {
       pageContentHtml =
@@ -42,7 +32,7 @@ class About extends StatelessComponent {
         [
           const Header(activePath: '/about'),
           div(classes: 'max-w-2xl w-full mx-auto px-6 py-16 flex-1', [
-            h1(
+            const h1(
               classes:
                   'text-3xl font-black tracking-tight text-slate-950 '
                   'dark:text-white mb-8',

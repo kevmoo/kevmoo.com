@@ -13,8 +13,9 @@ class ParsedContent {
   ParsedContent({
     required this.frontmatter,
     required this.bodyMarkdown,
-    this._blockSyntaxes = const [],
-  });
+    List<md.BlockSyntax> blockSyntaxes = const [],
+    // ignore: prefer_initializing_formals
+  }) : _blockSyntaxes = blockSyntaxes;
 
   late final String bodyHtml = md.markdownToHtml(
     bodyMarkdown,
