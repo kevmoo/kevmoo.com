@@ -28,7 +28,7 @@ void main() {
           tag: 'script',
           attributes: {
             'async': '',
-            'src': 'https://www.googletagmanager.com/gtag/js?id=UA-3441863-3',
+            'src': 'https://www.googletagmanager.com/gtag/js?id=G-L850GNPZ7C',
           },
           children: [],
         ),
@@ -40,7 +40,7 @@ void main() {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'UA-3441863-3');'''),
+              gtag('config', 'G-L850GNPZ7C');'''),
           ],
         ),
         // Auto-discovery SEO links for Sitemap and RSS/Atom feed
