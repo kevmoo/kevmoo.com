@@ -42,7 +42,8 @@ class ProjectsPage extends StatelessComponent {
             ),
 
             div(classes: 'grid grid-cols-1 gap-8', [
-              for (final project in allProjects) ProjectCard(project: project),
+              for (final project in allProjects)
+                ProjectCard(project: project, key: ValueKey(project.id)),
             ]),
           ]),
           const Footer(),

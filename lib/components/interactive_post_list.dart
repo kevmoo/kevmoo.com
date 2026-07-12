@@ -135,7 +135,7 @@ class _InteractivePostListState extends State<InteractivePostList> {
       }
 
       if (isVisible) {
-        itemsToRender.add(PostCard(post: post));
+        itemsToRender.add(PostCard(post: post, key: ValueKey(post.permalink)));
       }
     }
 
@@ -153,7 +153,7 @@ class _InteractivePostListState extends State<InteractivePostList> {
             // Trigger Button
             button(
               classes: 'dropdown-trigger',
-              attributes: {'id': 'flavor-dropdown-trigger'},
+              attributes: const {'id': 'flavor-dropdown-trigger'},
               events: {
                 'click': (event) => setState(() => isMenuOpen = !isMenuOpen),
               },
@@ -175,11 +175,13 @@ class _InteractivePostListState extends State<InteractivePostList> {
               div(classes: 'dropdown-menu', [
                 for (final f in availableFlavors)
                   _DropdownItem(
+                    key: ValueKey(f.name),
                     label: f.label,
                     isSelected: selectedFlavor == f,
                     onClick: () => _onFlavorSelected(f.name),
                   ),
                 _DropdownItem(
+                  key: const ValueKey('everything'),
                   label: 'Everything',
                   isSelected: selectedFlavor == null,
                   onClick: () => _onFlavorSelected(''),
@@ -201,7 +203,7 @@ class _InteractivePostListState extends State<InteractivePostList> {
       if (hasMore)
         div(classes: 'text-center mt-12', [
           button(
-            attributes: {'id': 'show-more-btn'},
+            attributes: const {'id': 'show-more-btn'},
             classes: 'show-more-btn',
             events: {'click': (event) => setState(() => visibleCount += 10)},
             [const Component.text('Show more posts...')],
@@ -262,6 +264,7 @@ class _DropdownItem extends StatelessComponent {
     required this.label,
     required this.isSelected,
     required this.onClick,
+    super.key,
   });
 
   @override
