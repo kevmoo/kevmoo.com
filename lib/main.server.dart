@@ -15,7 +15,7 @@ void main() {
 
   runApp(
     Document(
-      title: 'kevmoo @ Work',
+      title: '$authorName | Google Product Manager | Flutter & Dart',
       meta: const {
         'description':
             'Googler working on Dart and Flutter web technology. '
