@@ -16,7 +16,7 @@ This is the body.
 ''';
       final parsed = parseFrontmatterString(content, requireFrontmatter: true);
       check(parsed.frontmatter['title'].toString()).equals('Hello World');
-      check(parsed.frontmatter['tags']).isA<List>();
+      check(parsed.frontmatter['tags']).isA<List<dynamic>>();
       check(parsed.bodyMarkdown).equals('This is the body.');
     });
 
@@ -34,22 +34,17 @@ This is the body.
       ).throws<FormatException>();
     });
 
-    test(
-      'Gracefully handle malformed closing delimiter when requireFrontmatter is false',
-      () {
-        const content = '''
+    test('Gracefully handle malformed closing delimiter when '
+        'requireFrontmatter is false', () {
+      const content = '''
 ---
 title: No closing delimiter
 This is the body that starts with horizontal rule-like delimiter
 ''';
-        final parsed = parseFrontmatterString(
-          content,
-          requireFrontmatter: false,
-        );
-        check(parsed.frontmatter).isEmpty();
-        check(parsed.bodyMarkdown).equals(content);
-      },
-    );
+      final parsed = parseFrontmatterString(content, requireFrontmatter: false);
+      check(parsed.frontmatter).isEmpty();
+      check(parsed.bodyMarkdown).equals(content);
+    });
 
     test(
       'Throw on malformed closing delimiter when requireFrontmatter is true',

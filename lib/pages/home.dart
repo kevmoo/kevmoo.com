@@ -3,25 +3,25 @@ import 'package:jaspr/jaspr.dart';
 import '../components/header.dart';
 import '../components/interactive_post_list.dart';
 import '../constants.dart';
-import '../content.dart' as content;
 import '../models/client_post_item.dart';
+import '../models/data_model.dart';
 
 class Home extends StatelessComponent {
-  const Home({super.key});
+  final List<Post> posts;
+
+  const Home({required this.posts, super.key});
 
   @override
   Component build(BuildContext context) {
-    final posts = content.posts;
-
     final clientPosts = posts.map((post) {
-      final isWriting = post.flavor == content.EntryFlavor.writing;
+      final isWriting = post.flavor == EntryFlavor.writing;
       return ClientPostItem(
         permalink: post.permalink,
         title: post.title,
         subTitle: post.subTitle ?? '',
         dateString: _formatDate(post.date),
         year: post.date.year,
-        tags: post.tags.map(content.normalizeTag).toList(),
+        tags: post.tags.map(normalizeTag).toList(),
         awesomeHtml: post.flavor.awesome,
         isWriting: isWriting,
         linkUrl: isWriting ? post.permalink : (post.uri ?? ''),
@@ -88,7 +88,7 @@ class Home extends StatelessComponent {
                       'profiles flex justify-center gap-6 text-slate-400 '
                       'dark:text-slate-500',
                   [
-                    for (final link in content.socialLinks)
+                    for (final link in socialLinks)
                       _buildSocialLink(
                         link.href,
                         link.title,

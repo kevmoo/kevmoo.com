@@ -303,16 +303,3 @@ String generateSitemap() {
 }
 
 String _formatIso8601(DateTime date) => date.toUtc().toIso8601String();
-
-String normalizeTag(String tag) => switch (tag.toLowerCase()) {
-  'dartlang' || 'dart' => 'Dart',
-  'ruby on rails' || 'rails' => 'Rails',
-  '.net' => '.NET',
-  'c#' => 'CSharp',
-  'wpf' => 'WPF',
-  'xaml' => 'XAML',
-  'git' => 'Git',
-  'javascript' => 'JS',
-  _ when tag.length <= 3 => tag.toUpperCase(),
-  _ => tag[0].toUpperCase() + tag.substring(1),
-};
