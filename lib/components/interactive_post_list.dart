@@ -174,12 +174,12 @@ class _InteractivePostListState extends State<InteractivePostList> {
             if (isMenuOpen)
               div(classes: 'dropdown-menu', [
                 for (final f in availableFlavors)
-                  _buildDropdownItem(
+                  _DropdownItem(
                     label: f.label,
                     isSelected: selectedFlavor == f,
                     onClick: () => _onFlavorSelected(f.name),
                   ),
-                _buildDropdownItem(
+                _DropdownItem(
                   label: 'Everything',
                   isSelected: selectedFlavor == null,
                   onClick: () => _onFlavorSelected(''),
@@ -209,31 +209,6 @@ class _InteractivePostListState extends State<InteractivePostList> {
         ]),
     ]);
   }
-
-  Component _buildDropdownItem({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onClick,
-  }) {
-    final stateClass = isSelected
-        ? 'dropdown-item-active'
-        : 'dropdown-item-inactive';
-
-    return button(
-      classes: 'dropdown-item-base $stateClass',
-      events: {'click': (event) => onClick()},
-      [
-        Component.text(label),
-        if (isSelected)
-          const Component.element(
-            tag: 'i',
-            classes:
-                'fas fa-check text-blue-600 dark:text-blue-400 text-xs ml-2',
-            children: [],
-          ),
-      ],
-    );
-  }
 }
 
 class PostCard extends StatelessComponent {
@@ -255,7 +230,7 @@ class PostCard extends StatelessComponent {
           a(
             href: post.linkUrl,
             target: post.isWriting ? null : Target.blank,
-            attributes: post.isWriting ? {} : {'rel': 'noopener'},
+            attributes: post.isWriting ? const {} : const {'rel': 'noopener'},
             classes: 'card-title-link',
             [
               Component.text(post.title.trim()),
@@ -274,6 +249,35 @@ class PostCard extends StatelessComponent {
           div(classes: 'card-subtitle', [Component.text(post.subTitle)]),
       ]),
       div(classes: 'card-date', [Component.text(post.dateString)]),
+    ],
+  );
+}
+
+class _DropdownItem extends StatelessComponent {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onClick;
+
+  const _DropdownItem({
+    required this.label,
+    required this.isSelected,
+    required this.onClick,
+  });
+
+  @override
+  Component build(BuildContext context) => button(
+    classes:
+        'dropdown-item-base '
+        '${isSelected ? 'dropdown-item-active' : 'dropdown-item-inactive'}',
+    events: {'click': (event) => onClick()},
+    [
+      Component.text(label),
+      if (isSelected)
+        const Component.element(
+          tag: 'i',
+          classes: 'fas fa-check text-blue-600 dark:text-blue-400 text-xs ml-2',
+          children: [],
+        ),
     ],
   );
 }
