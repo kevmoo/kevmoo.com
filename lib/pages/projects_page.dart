@@ -109,19 +109,20 @@ class ProjectCard extends StatelessComponent {
               ),
             ],
           ),
-        a(
-          href: project.githubUrl!,
-          target: Target.blank,
-          classes: 'hover:underline flex items-center gap-1',
-          [
-            const Component.text('GitHub'),
-            const Component.element(
-              tag: 'i',
-              classes: 'fab fa-github text-sm',
-              children: [],
-            ),
-          ],
-        ),
+        if (project.githubUrl != null)
+          a(
+            href: project.githubUrl!,
+            target: Target.blank,
+            classes: 'hover:underline flex items-center gap-1',
+            [
+              const Component.text('GitHub'),
+              const Component.element(
+                tag: 'i',
+                classes: 'fab fa-github text-sm',
+                children: [],
+              ),
+            ],
+          ),
       ]),
     ]),
   ]);
