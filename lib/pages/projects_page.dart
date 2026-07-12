@@ -99,6 +99,7 @@ class ProjectCard extends StatelessComponent {
           a(
             href: project.pubUrl!,
             target: Target.blank,
+            attributes: const {'rel': 'noopener'},
             classes: 'hover:underline flex items-center gap-1',
             [
               const Component.text('pub.dev'),
@@ -113,6 +114,7 @@ class ProjectCard extends StatelessComponent {
           a(
             href: project.githubUrl!,
             target: Target.blank,
+            attributes: const {'rel': 'noopener'},
             classes: 'hover:underline flex items-center gap-1',
             [
               const Component.text('GitHub'),
