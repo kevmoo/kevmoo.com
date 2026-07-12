@@ -32,7 +32,7 @@ List<Project> _loadProjects() {
 }
 
 Project parseProjectFile(File file) {
-  final parsed = parseFrontmatterFile(file);
+  final parsed = parseFrontmatterFile(file, requireFrontmatter: true);
   final yamlMap = parsed.frontmatter;
 
   final name = yamlMap['name']?.toString();

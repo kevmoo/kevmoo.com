@@ -102,7 +102,7 @@ final _fileDateRegExp = RegExp(r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.(md|html)$');
 final _markdownCleanupRegExp = RegExp(r'\{:\s*[^}]*\}');
 
 Post _parseJekyllPost(String filePath, String filename, String content) {
-  final parsed = parseFrontmatterString(content);
+  final parsed = parseFrontmatterString(content, requireFrontmatter: true);
   final yaml = parsed.frontmatter;
   final title = yaml['title']?.toString() ?? 'Untitled';
 
