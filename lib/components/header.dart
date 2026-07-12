@@ -1,6 +1,8 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../constants.dart';
+
 class Header extends StatelessComponent {
   final String activePath;
 
@@ -42,7 +44,7 @@ class Header extends StatelessComponent {
                   'text-lg font-black text-slate-950 dark:text-white '
                   'hover:text-blue-600 dark:hover:text-blue-400 '
                   'transition-colors',
-              [Component.text('Kevin Moore')],
+              [Component.text(authorName)],
             ),
             // Navigation
             nav(classes: 'flex items-center space-x-6', [

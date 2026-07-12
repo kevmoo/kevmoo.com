@@ -242,7 +242,7 @@ String generateAtomFeed() {
             builder.element(
               'author',
               nest: () {
-                builder.element('name', nest: 'Kevin Moore');
+                builder.element('name', nest: authorName);
               },
             );
             for (final tag in post.tags) {

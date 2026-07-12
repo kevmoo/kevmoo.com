@@ -1,5 +1,6 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
+import '../constants.dart';
 import '../models/data_model.dart';
 
 class Footer extends StatelessComponent {
@@ -19,7 +20,7 @@ class Footer extends StatelessComponent {
               'max-w-3xl mx-auto px-6 flex items-center justify-between '
               'text-xs text-slate-400 dark:text-slate-500',
           [
-            p([Component.text('© $currentYear Kevin Moore.')]),
+            p([Component.text('© $currentYear $authorName.')]),
             div(
               classes:
                   'flex items-center space-x-6 text-slate-400 '

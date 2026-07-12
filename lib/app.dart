@@ -2,6 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
+import 'constants.dart';
 import 'models/data_model.dart';
 import 'pages/about.dart';
 import 'pages/home.dart';
@@ -29,7 +30,7 @@ class App extends StatelessComponent {
         .map(
           (post) => Route(
             path: post.permalink,
-            title: post.title,
+            title: '${post.title} | $authorName',
             builder: (context, state) => PostPage(permalink: post.permalink),
           ),
         )
@@ -40,32 +41,29 @@ class App extends StatelessComponent {
         routes: [
           Route(
             path: '/',
-            title: 'kevmoo @ Work',
+            title: homePageTitle,
             builder: (context, state) => Home(posts: posts),
           ),
           Route(
             path: '/about',
-            title: 'About | kevmoo @ Work',
+            title: 'About | $authorName',
             builder: (context, state) => About(contentHtml: aboutContentHtml),
           ),
           Route(
             path: '/projects',
-            title: 'Projects | kevmoo @ Work',
+            title: 'Projects | $authorName',
             builder: (context, state) => ProjectsPage(projects: projects),
           ),
           Route(
             path: '/feed.xml',
-            title: 'Feed | kevmoo @ Work',
             builder: (context, state) => const FeedOutput(),
           ),
           Route(
             path: '/sitemap.xml',
-            title: 'Sitemap | kevmoo @ Work',
             builder: (context, state) => const SitemapOutput(),
           ),
           Route(
             path: '/styles.css',
-            title: 'Styles | kevmoo @ Work',
             builder: (context, state) => const StylesOutput(),
           ),
           ...postRoutes,
