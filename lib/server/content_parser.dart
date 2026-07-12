@@ -2,6 +2,9 @@ import 'dart:io';
 import 'package:markdown/markdown.dart' as md;
 import 'package:yaml/yaml.dart';
 
+final _frontmatterStart = RegExp(r'^---[ \t]*\r?(?:\n|$)');
+final _frontmatterDelimiter = RegExp(r'^---[ \t]*\r?$', multiLine: true);
+
 class ParsedContent {
   final YamlMap frontmatter;
   final String bodyMarkdown;
@@ -38,7 +41,7 @@ ParsedContent parseFrontmatterString(
   List<md.BlockSyntax> blockSyntaxes = const [],
   bool requireFrontmatter = false,
 }) {
-  if (!content.startsWith('---')) {
+  if (!_frontmatterStart.hasMatch(content)) {
     if (requireFrontmatter) {
       throw const FormatException(
         'File does not start with frontmatter delimiter (---)',
@@ -53,15 +56,19 @@ ParsedContent parseFrontmatterString(
 
   final firstLineEnd = content.indexOf('\n');
   if (firstLineEnd == -1) {
-    throw const FormatException(
-      'Malformed frontmatter (missing closing --- on its own line)',
+    if (requireFrontmatter) {
+      throw const FormatException(
+        'Malformed frontmatter (missing closing --- on its own line)',
+      );
+    }
+    return ParsedContent(
+      frontmatter: YamlMap.wrap(const {}),
+      bodyMarkdown: '',
+      blockSyntaxes: blockSyntaxes,
     );
   }
 
-  final matches = RegExp(
-    r'^---[ \t]*\r?$',
-    multiLine: true,
-  ).allMatches(content, firstLineEnd + 1);
+  final matches = _frontmatterDelimiter.allMatches(content, firstLineEnd + 1);
 
   if (matches.isEmpty) {
     throw const FormatException(
