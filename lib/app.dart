@@ -41,7 +41,7 @@ class App extends StatelessComponent {
         routes: [
           Route(
             path: '/',
-            title: '$authorName | Google Product Manager | Flutter & Dart',
+            title: homePageTitle,
             builder: (context, state) => Home(posts: posts),
           ),
           Route(
