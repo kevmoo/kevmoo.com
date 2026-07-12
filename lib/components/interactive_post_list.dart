@@ -154,7 +154,10 @@ class _InteractivePostListState extends State<InteractivePostList> {
             // Trigger Button
             button(
               classes: 'dropdown-trigger',
-              attributes: const {'id': 'flavor-dropdown-trigger'},
+              attributes: const {
+                'id': 'flavor-dropdown-trigger',
+                'type': 'button',
+              },
               events: {
                 'click': (event) => setState(() => isMenuOpen = !isMenuOpen),
               },
@@ -204,7 +207,7 @@ class _InteractivePostListState extends State<InteractivePostList> {
       if (hasMore)
         div(classes: 'text-center mt-12', [
           button(
-            attributes: const {'id': 'show-more-btn'},
+            attributes: const {'id': 'show-more-btn', 'type': 'button'},
             classes: 'show-more-btn',
             events: {'click': (event) => setState(() => visibleCount += 10)},
             [const Component.text('Show more posts...')],
@@ -273,6 +276,7 @@ class _DropdownItem extends StatelessComponent {
     classes:
         'dropdown-item-base '
         '${isSelected ? 'dropdown-item-active' : 'dropdown-item-inactive'}',
+    attributes: const {'type': 'button'},
     events: {'click': (event) => onClick()},
     [
       Component.text(label),
