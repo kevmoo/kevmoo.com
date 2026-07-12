@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
-import 'package:markdown/markdown.dart' as md;
 
 import '../components/footer.dart';
 import '../components/header.dart';
 import '../constants.dart';
+import '../server/content_parser.dart';
 
 class About extends StatelessComponent {
   const About({super.key});
@@ -18,22 +18,8 @@ class About extends StatelessComponent {
     try {
       final file = File('_pages/about.md');
       if (file.existsSync()) {
-        final content = file.readAsStringSync();
-        if (content.startsWith('---')) {
-          final parts = content.split('---');
-          if (parts.length >= 3) {
-            final body = parts.sublist(2).join('---').trim();
-            pageContentHtml = md.markdownToHtml(
-              body,
-              extensionSet: md.ExtensionSet.gitHubFlavored,
-            );
-          }
-        } else {
-          pageContentHtml = md.markdownToHtml(
-            content,
-            extensionSet: md.ExtensionSet.gitHubFlavored,
-          );
-        }
+        final parsed = parseFrontmatterFile(file);
+        pageContentHtml = parsed.bodyHtml;
       }
     } catch (e) {
       print('Error loading about.md: $e');

@@ -3,6 +3,7 @@ import 'package:jaspr/jaspr.dart';
 import '../components/footer.dart';
 import '../components/header.dart';
 import '../constants.dart';
+import '../models/data_model.dart';
 import '../projects_content.dart';
 
 class ProjectsPage extends StatelessComponent {

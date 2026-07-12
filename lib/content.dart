@@ -5,6 +5,7 @@ import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
 import 'constants.dart';
 import 'models/data_model.dart';
+import 'server/content_parser.dart';
 
 export 'models/data_model.dart';
 
@@ -101,25 +102,8 @@ final _fileDateRegExp = RegExp(r'^(\d{4})-(\d{2})-(\d{2})-(.+)\.(md|html)$');
 final _markdownCleanupRegExp = RegExp(r'\{:\s*[^}]*\}');
 
 Post _parseJekyllPost(String filePath, String filename, String content) {
-  if (!content.startsWith('---')) {
-    throw FormatException(
-      'File does not start with Jekyll frontmatter '
-      'delimiter (---) in $filePath',
-    );
-  }
-
-  final parts = content.split('---');
-  if (parts.length < 3) {
-    throw FormatException(
-      'Malformed Jekyll frontmatter (missing closing ---) '
-      'in $filePath',
-    );
-  }
-
-  final frontmatterString = parts[1];
-  final bodyContent = parts.sublist(2).join('---').trim();
-
-  final yaml = loadYaml(frontmatterString) as YamlMap;
+  final parsed = parseFrontmatterString(content);
+  final yaml = parsed.frontmatter;
   final title = yaml['title']?.toString() ?? 'Untitled';
 
   // Extract date from filename
@@ -161,9 +145,12 @@ Post _parseJekyllPost(String filePath, String filename, String content) {
 
   var contentHtml = '';
   if (isHtml) {
-    contentHtml = bodyContent;
+    contentHtml = parsed.bodyMarkdown;
   } else {
-    final cleanedBody = bodyContent.replaceAll(_markdownCleanupRegExp, '');
+    final cleanedBody = parsed.bodyMarkdown.replaceAll(
+      _markdownCleanupRegExp,
+      '',
+    );
     contentHtml = md.markdownToHtml(
       cleanedBody,
       extensionSet: md.ExtensionSet.gitHubFlavored,

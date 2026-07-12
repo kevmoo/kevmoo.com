@@ -1,43 +1,8 @@
 import 'dart:io';
-import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
-
-class Project {
-  final String id;
-  final String name;
-  final String repo; // e.g. kevmoo/pubviz
-  final String? pubPackage; // e.g. pubviz
-  final String? installCommand;
-  final bool featured;
-  final bool ignore;
-  final List<String> relatedPostPermalinks;
-  final String contentHtml;
-  final String? latestVersion;
-  final int? githubStars;
-  final String? pubUrl;
-  final String? githubUrl;
-  final String? lastReviewedSha;
-  final DateTime? lastReviewedAt;
-
-  Project({
-    required this.id,
-    required this.name,
-    required this.repo,
-    this.pubPackage,
-    this.installCommand,
-    this.featured = false,
-    this.ignore = false,
-    this.relatedPostPermalinks = const [],
-    required this.contentHtml,
-    this.latestVersion,
-    this.githubStars,
-    this.pubUrl,
-    this.githubUrl,
-    this.lastReviewedSha,
-    this.lastReviewedAt,
-  });
-}
+import 'models/data_model.dart';
+import 'server/content_parser.dart';
 
 List<Project> get projects => _loadProjects();
 
@@ -67,24 +32,8 @@ List<Project> _loadProjects() {
 }
 
 Project parseProjectFile(File file) {
-  final content = file.readAsStringSync();
-  if (!content.startsWith('---')) {
-    throw const FormatException(
-      'File does not start with YAML frontmatter delimiter (---)',
-    );
-  }
-
-  final parts = content.split('---');
-  if (parts.length < 3) {
-    throw const FormatException(
-      'Malformed YAML frontmatter (missing closing ---)',
-    );
-  }
-
-  final yamlMap = loadYaml(parts[1]);
-  if (yamlMap is! YamlMap) {
-    throw const FormatException('YAML frontmatter is not a key-value map');
-  }
+  final parsed = parseFrontmatterFile(file);
+  final yamlMap = parsed.frontmatter;
 
   final name = yamlMap['name']?.toString();
   final repo = yamlMap['repo']?.toString();
@@ -94,12 +43,6 @@ Project parseProjectFile(File file) {
   if (repo == null || repo.trim().isEmpty) {
     throw const FormatException('Missing required field "repo"');
   }
-
-  final bodyContent = parts.sublist(2).join('---').trim();
-  final contentHtml = md.markdownToHtml(
-    bodyContent,
-    extensionSet: md.ExtensionSet.gitHubFlavored,
-  );
 
   final id = p.basenameWithoutExtension(file.path);
   final pubPkg = yamlMap['pub_package']?.toString();
@@ -125,7 +68,7 @@ Project parseProjectFile(File file) {
             ?.map((e) => e.toString())
             .toList() ??
         const [],
-    contentHtml: contentHtml,
+    contentHtml: parsed.bodyHtml,
     latestVersion: yamlMap['version']?.toString(),
     githubStars: yamlMap['stars'] is int
         ? yamlMap['stars'] as int
