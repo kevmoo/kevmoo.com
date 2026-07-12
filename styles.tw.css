@@ -2,6 +2,8 @@
 @source "lib/**/*.dart";
 @source "_pages/about.md";
 
+/* Trigger recompilation */
+
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
@@ -229,21 +231,100 @@
   padding-right: 1.5rem;
 }
 
-/* Glassmorphic Dark Theme styles (Ported from kevmoo.com) */
+/* Global Theme Variables */
+:root, body {
+  --bg-color: #ffffff;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(203, 213, 225, 0.8);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --accent-color: #2563eb;
+  --accent-hover: #1d4ed8;
+  --glass-shadow: 0 2px 12px 0 rgba(148, 163, 184, 0.15);
+}
+
 .glass-theme {
-  --bg-color: #0f172a;
-  --card-bg: rgba(30, 41, 59, 0.7);
-  --card-border: rgba(255, 255, 255, 0.1);
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --accent-color: #38bdf8;
-  --accent-hover: #7dd3fc;
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --bg-color: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(203, 213, 225, 0.6);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --accent-color: #2563eb;
+  --accent-hover: #1d4ed8;
+  --glass-shadow: 0 4px 20px 0 rgba(148, 163, 184, 0.25);
 
   background-color: var(--bg-color);
-  background: radial-gradient(circle at top right, #1e293b, #0f172a);
+  background: radial-gradient(circle at top right, #f1f5f9, #e2e8f0);
   color: var(--text-primary);
   font-family: 'Roboto Slab', serif !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(15, 23, 42);
+    color: rgb(248, 250, 252);
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #38bdf8;
+    --accent-hover: #7dd3fc;
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .glass-theme {
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #38bdf8;
+    --accent-hover: #7dd3fc;
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+
+    background: radial-gradient(circle at top right, #1e293b, #0f172a);
+  }
+
+  .glass-theme h1 {
+    background: linear-gradient(to bottom right, #fff, #94a3b8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .prose {
+    color: rgb(226, 232, 240);
+  }
+  .prose p, .prose li {
+    color: rgba(226, 232, 240, 0.9);
+  }
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    color: rgb(248, 250, 252);
+  }
+  .prose h2 {
+    border-bottom-color: rgb(51, 65, 85);
+  }
+  .prose a {
+    color: rgb(56, 189, 248);
+  }
+  .prose a:hover {
+    color: rgb(125, 211, 252);
+  }
+  .prose blockquote {
+    color: rgb(148, 163, 184);
+    background-color: rgba(30, 41, 59, 0.5);
+    border-left-color: rgb(56, 189, 248);
+  }
+  .prose th {
+    color: rgb(248, 250, 252);
+    background-color: rgba(30, 41, 59, 0.8);
+    border-bottom-color: rgb(71, 85, 105);
+  }
+  .prose td {
+    color: rgba(226, 232, 240, 0.9);
+    border-bottom-color: rgb(51, 65, 85);
+  }
 }
 
 .glass-theme a {
@@ -257,10 +338,22 @@
   text-decoration: underline;
 }
 
+.glass-theme a.hero-pill-btn,
+.glass-theme a.hero-pill-btn:hover {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.glass-theme a.hero-pill-btn-secondary,
+.glass-theme a.hero-pill-btn-secondary:hover {
+  color: var(--text-primary) !important;
+  text-decoration: none !important;
+}
+
 .glass-theme h1 {
   font-size: 3rem;
   margin-bottom: 0.5rem;
-  background: linear-gradient(to bottom right, #fff, #94a3b8);
+  background: linear-gradient(to bottom right, #0f172a, #334155);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

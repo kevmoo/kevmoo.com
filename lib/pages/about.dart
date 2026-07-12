@@ -12,7 +12,6 @@ class About extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    // Load and render about.md dynamically at build time
     var pageTitle = 'About';
     var pageContentHtml = '';
 
@@ -50,19 +49,26 @@ class About extends StatelessComponent {
       const Document.head(
         children: [link(href: '$siteUrl/about/', rel: 'canonical')],
       ),
-      div(classes: 'bg-white text-slate-700 flex-1 flex flex-col', [
-        const Header(),
-        div(classes: 'max-w-2xl w-full mx-auto px-6 py-16 flex-1', [
-          h1(
-            classes:
-                'text-3xl font-black tracking-tight text-slate-950 '
-                'mb-8',
-            [Component.text(pageTitle)],
-          ),
-          article(classes: 'prose', [RawText(pageContentHtml)]),
-        ]),
-        const Footer(),
-      ]),
+      div(
+        classes:
+            'bg-white dark:bg-slate-950 text-slate-700 dark:text-slate-200 '
+            'flex-1 flex flex-col min-h-screen',
+        [
+          const Header(activePath: '/about'),
+          div(classes: 'max-w-2xl w-full mx-auto px-6 py-16 flex-1', [
+            h1(
+              classes:
+                  'text-3xl font-black tracking-tight text-slate-950 '
+                  'dark:text-white mb-8',
+              [Component.text(pageTitle)],
+            ),
+            article(classes: 'prose dark:prose-invert', [
+              RawText(pageContentHtml),
+            ]),
+          ]),
+          const Footer(),
+        ],
+      ),
     ]);
   }
 }
