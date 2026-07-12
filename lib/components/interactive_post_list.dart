@@ -120,6 +120,7 @@ class _InteractivePostListState extends State<InteractivePostList> {
           final topPadding = isFirst ? 'pt-0' : 'pt-10';
           itemsToRender.add(
             div(
+              key: ValueKey('year-$postYear'),
               classes:
                   'year-marker year-marker-container $topPadding first:pt-0',
               attributes: {'data-year': '$postYear'},
