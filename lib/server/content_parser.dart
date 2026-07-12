@@ -8,18 +8,18 @@ final _frontmatterDelimiter = RegExp(r'^---[ \t]*\r?$', multiLine: true);
 class ParsedContent {
   final YamlMap frontmatter;
   final String bodyMarkdown;
-  final List<md.BlockSyntax> blockSyntaxes;
+  final List<md.BlockSyntax> _blockSyntaxes;
 
   ParsedContent({
     required this.frontmatter,
     required this.bodyMarkdown,
-    this.blockSyntaxes = const [],
+    this._blockSyntaxes = const [],
   });
 
   late final String bodyHtml = md.markdownToHtml(
     bodyMarkdown,
     extensionSet: md.ExtensionSet.gitHubFlavored,
-    blockSyntaxes: blockSyntaxes,
+    blockSyntaxes: _blockSyntaxes,
   );
 }
 
