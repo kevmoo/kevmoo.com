@@ -1,6 +1,6 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
-import '../content.dart' as content;
+import '../models/data_model.dart';
 
 class Footer extends StatelessComponent {
   const Footer({super.key});
@@ -25,7 +25,7 @@ class Footer extends StatelessComponent {
                   'flex items-center space-x-6 text-slate-400 '
                   'dark:text-slate-500',
               [
-                for (final link in content.socialLinks)
+                for (final link in socialLinks)
                   a(
                     href: link.href,
                     target: Target.blank,

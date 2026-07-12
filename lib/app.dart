@@ -2,7 +2,7 @@ import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 import 'package:jaspr_router/jaspr_router.dart';
 
-import 'content.dart' as content;
+import 'models/data_model.dart';
 import 'pages/about.dart';
 import 'pages/home.dart';
 import 'pages/post_page.dart';
@@ -10,13 +10,22 @@ import 'pages/projects_page.dart';
 import 'pages/static_outputs.dart';
 
 class App extends StatelessComponent {
-  const App({super.key});
+  final List<Post> posts;
+  final List<Project> projects;
+  final String aboutContentHtml;
+
+  const App({
+    required this.posts,
+    required this.projects,
+    required this.aboutContentHtml,
+    super.key,
+  });
 
   @override
   Component build(BuildContext context) {
     // Dynamically compile post routes from our parsed content database
-    final postRoutes = content.posts
-        .where((post) => post.flavor == content.EntryFlavor.writing)
+    final postRoutes = posts
+        .where((post) => post.flavor == EntryFlavor.writing)
         .map(
           (post) => Route(
             path: post.permalink,
@@ -32,17 +41,17 @@ class App extends StatelessComponent {
           Route(
             path: '/',
             title: 'kevmoo @ Work',
-            builder: (context, state) => const Home(),
+            builder: (context, state) => Home(posts: posts),
           ),
           Route(
             path: '/about',
             title: 'About | kevmoo @ Work',
-            builder: (context, state) => const About(),
+            builder: (context, state) => About(contentHtml: aboutContentHtml),
           ),
           Route(
             path: '/projects',
             title: 'Projects | kevmoo @ Work',
-            builder: (context, state) => const ProjectsPage(),
+            builder: (context, state) => ProjectsPage(projects: projects),
           ),
           Route(
             path: '/feed.xml',

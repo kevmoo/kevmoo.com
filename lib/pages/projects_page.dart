@@ -3,10 +3,12 @@ import 'package:jaspr/jaspr.dart';
 import '../components/footer.dart';
 import '../components/header.dart';
 import '../constants.dart';
-import '../projects_content.dart';
+import '../models/data_model.dart';
 
 class ProjectsPage extends StatelessComponent {
-  const ProjectsPage({super.key});
+  final List<Project> projects;
+
+  const ProjectsPage({required this.projects, super.key});
 
   @override
   Component build(BuildContext context) {

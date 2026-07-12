@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:path/path.dart' as p;
+import 'package:work_j832_com/server/content_parser.dart';
 import 'package:yaml/yaml.dart';
 
 void main(List<String> args) async {
@@ -27,11 +29,16 @@ void main(List<String> args) async {
     final content = file.readAsStringSync();
     if (!content.startsWith('---')) continue;
 
-    final parts = content.split('---');
-    if (parts.length < 3) continue;
+    final ParsedContent parsed;
+    try {
+      parsed = parseFrontmatterString(content, requireFrontmatter: true);
+    } catch (e) {
+      print('Warning: Failed to parse frontmatter in ${file.path}: $e');
+      continue;
+    }
 
-    final yamlMap = loadYaml(parts[1]) as YamlMap;
-    final bodyContent = parts.sublist(2).join('---').trim();
+    final yamlMap = parsed.frontmatter;
+    final bodyContent = parsed.bodyMarkdown;
 
     final name = yamlMap['name']?.toString() ?? p.basename(file.path);
     final repo = yamlMap['repo']?.toString();

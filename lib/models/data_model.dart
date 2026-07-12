@@ -61,6 +61,42 @@ class Post {
   });
 }
 
+class Project {
+  final String id;
+  final String name;
+  final String repo; // e.g. kevmoo/pubviz
+  final String? pubPackage; // e.g. pubviz
+  final String? installCommand;
+  final bool featured;
+  final bool ignore;
+  final List<String> relatedPostPermalinks;
+  final String contentHtml;
+  final String? latestVersion;
+  final int? githubStars;
+  final String? pubUrl;
+  final String? githubUrl;
+  final String? lastReviewedSha;
+  final DateTime? lastReviewedAt;
+
+  Project({
+    required this.id,
+    required this.name,
+    required this.repo,
+    this.pubPackage,
+    this.installCommand,
+    this.featured = false,
+    this.ignore = false,
+    this.relatedPostPermalinks = const [],
+    required this.contentHtml,
+    this.latestVersion,
+    this.githubStars,
+    this.pubUrl,
+    this.githubUrl,
+    this.lastReviewedSha,
+    this.lastReviewedAt,
+  });
+}
+
 typedef SocialLink = ({String href, String title, String iconClass});
 
 const socialLinks = <SocialLink>[
@@ -100,3 +136,16 @@ const socialLinks = <SocialLink>[
     iconClass: 'fab fa-twitter',
   ),
 ];
+
+String normalizeTag(String tag) => switch (tag.toLowerCase()) {
+  'dartlang' || 'dart' => 'Dart',
+  'ruby on rails' || 'rails' => 'Rails',
+  '.net' => '.NET',
+  'c#' => 'CSharp',
+  'wpf' => 'WPF',
+  'xaml' => 'XAML',
+  'git' => 'Git',
+  'javascript' => 'JS',
+  _ when tag.length <= 3 => tag.toUpperCase(),
+  _ => tag[0].toUpperCase() + tag.substring(1),
+};

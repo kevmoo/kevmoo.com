@@ -3,7 +3,9 @@ import 'package:jaspr/server.dart';
 
 import 'app.dart';
 import 'constants.dart';
+import 'content.dart' as content;
 import 'main.server.options.dart';
+import 'projects_content.dart' as projects_content;
 
 void main() {
   Jaspr.initializeApp(
@@ -12,15 +14,15 @@ void main() {
   );
 
   runApp(
-    const Document(
+    Document(
       title: 'kevmoo @ Work',
-      meta: {
+      meta: const {
         'description':
             'Googler working on Dart and Flutter web technology. '
             'Thoughts, notes, and bag of tricks.',
         'viewport': 'width=device-width, initial-scale=1.0',
       },
-      head: [
+      head: const [
         // Google Analytics (gtag.js)
         Component.element(
           tag: 'script',
@@ -90,8 +92,12 @@ void main() {
           children: [],
         ),
       ],
-      styles: [],
-      body: App(),
+      styles: const [],
+      body: App(
+        posts: content.posts,
+        projects: projects_content.projects,
+        aboutContentHtml: content.loadAboutContent(),
+      ),
     ),
   );
 }
