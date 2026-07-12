@@ -65,12 +65,17 @@ ParsedContent parseFrontmatterString(
   final bodyMarkdown = (match.group(2) ?? '').trim();
 
   final yaml = loadYaml(frontmatterString);
-  if (yaml is! YamlMap) {
+  final YamlMap yamlMap;
+  if (yaml == null) {
+    yamlMap = YamlMap.wrap(const {});
+  } else if (yaml is YamlMap) {
+    yamlMap = yaml;
+  } else {
     throw const FormatException('Frontmatter is not a key-value map');
   }
 
   return ParsedContent(
-    frontmatter: yaml,
+    frontmatter: yamlMap,
     bodyMarkdown: bodyMarkdown,
     blockSyntaxes: blockSyntaxes,
   );
