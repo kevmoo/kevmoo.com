@@ -42,7 +42,8 @@ class ProjectsPage extends StatelessComponent {
             ),
 
             div(classes: 'grid grid-cols-1 gap-8', [
-              for (final project in allProjects) _buildProjectCard(project),
+              for (final project in allProjects)
+                ProjectCard(project: project, key: ValueKey(project.id)),
             ]),
           ]),
           const Footer(),
@@ -50,107 +51,86 @@ class ProjectsPage extends StatelessComponent {
       ),
     ]);
   }
+}
 
-  Component _buildProjectCard(Project project) => div(
-    classes:
-        'border border-slate-200 dark:border-slate-800/80 rounded-xl p-6 '
-        'hover:border-blue-500/40 dark:hover:border-blue-400/50 transition-all '
-        'shadow-sm bg-slate-50/50 dark:bg-slate-900/50 flex flex-col justify-between',
-    [
+class ProjectCard extends StatelessComponent {
+  final Project project;
+
+  const ProjectCard({required this.project, super.key});
+
+  @override
+  Component build(BuildContext context) {
+    final installCommand = project.installCommand;
+    final pubUrl = project.pubUrl;
+    final githubUrl = project.githubUrl;
+
+    return div(classes: 'project-card', [
       div([
         div(classes: 'flex items-center justify-between gap-3 mb-2', [
-          div(
-            classes:
-                'flex items-center gap-3 text-xs font-medium '
-                'text-slate-500 dark:text-slate-400 ml-auto',
-            [
-              if (project.latestVersion != null)
-                span(
-                  classes:
-                      'flex items-center gap-1 bg-slate-200/60 dark:bg-slate-800 '
-                      'px-2 py-0.5 rounded text-slate-700 dark:text-slate-300',
-                  [
-                    const Component.element(
-                      tag: 'i',
-                      classes: 'fas fa-tag text-[10px]',
-                      children: [],
-                    ),
-                    Component.text('v${project.latestVersion}'),
-                  ],
+          div(classes: 'project-metadata', [
+            if (project.latestVersion != null)
+              span(classes: 'project-version', [
+                const Component.element(
+                  tag: 'i',
+                  classes: 'fas fa-tag text-[10px]',
+                  children: [],
                 ),
-              if (project.githubStars != null)
-                span(classes: 'flex items-center gap-1', [
-                  const Component.element(
-                    tag: 'i',
-                    classes: 'fas fa-star text-amber-400',
-                    children: [],
-                  ),
-                  Component.text('${project.githubStars}'),
-                ]),
-            ],
-          ),
+                Component.text('v${project.latestVersion}'),
+              ]),
+            if (project.githubStars != null)
+              span(classes: 'flex items-center gap-1', [
+                const Component.element(
+                  tag: 'i',
+                  classes: 'fas fa-star text-amber-400',
+                  children: [],
+                ),
+                Component.text('${project.githubStars}'),
+              ]),
+          ]),
         ]),
-        h2(classes: 'text-2xl font-bold text-slate-900 dark:text-white mb-3', [
-          Component.text(project.name),
+        h2(classes: 'project-title', [Component.text(project.name)]),
+        div(classes: 'prose prose-slate dark:prose-invert project-desc', [
+          RawText(project.contentHtml),
         ]),
-        div(
-          classes:
-              'prose prose-slate dark:prose-invert max-w-none text-sm '
-              'text-slate-600 dark:text-slate-300 mb-6 leading-relaxed',
-          [RawText(project.contentHtml)],
-        ),
       ]),
-      div(
-        classes:
-            'flex items-center justify-between pt-4 border-t '
-            'border-slate-200/60 dark:border-slate-800/80 text-xs font-mono',
-        [
-          if (project.installCommand != null &&
-              project.installCommand!.isNotEmpty)
-            code(
-              classes:
-                  'bg-slate-200/50 dark:bg-slate-800/80 text-slate-700 '
-                  'dark:text-slate-200 px-2.5 py-1 rounded select-all',
-              [Component.text(project.installCommand!)],
-            )
-          else
-            const span([]),
-          div(
-            classes:
-                'flex items-center gap-4 font-sans font-semibold '
-                'text-blue-600 dark:text-blue-400',
-            [
-              if (project.pubUrl != null)
-                a(
-                  href: project.pubUrl!,
-                  target: Target.blank,
-                  classes: 'hover:underline flex items-center gap-1',
-                  [
-                    const Component.text('pub.dev'),
-                    const Component.element(
-                      tag: 'i',
-                      classes: 'fas fa-external-link-alt text-[10px]',
-                      children: [],
-                    ),
-                  ],
+      div(classes: 'project-footer', [
+        if (installCommand != null && installCommand.isNotEmpty)
+          code(classes: 'project-install-cmd', [
+            Component.text(installCommand),
+          ]),
+        div(classes: 'project-links', [
+          if (pubUrl != null)
+            a(
+              href: pubUrl,
+              target: Target.blank,
+              attributes: const {'rel': 'noopener'},
+              classes: 'hover:underline flex items-center gap-1',
+              [
+                const Component.text('pub.dev'),
+                const Component.element(
+                  tag: 'i',
+                  classes: 'fas fa-external-link-alt text-[10px]',
+                  children: [],
                 ),
-              a(
-                href: project.githubUrl!,
-                target: Target.blank,
-                classes: 'hover:underline flex items-center gap-1',
-                [
-                  const Component.text('GitHub'),
-                  const Component.element(
-                    tag: 'i',
-                    classes: 'fab fa-github text-sm',
-                    children: [],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    ],
-  );
+              ],
+            ),
+          if (githubUrl != null)
+            a(
+              href: githubUrl,
+              target: Target.blank,
+              attributes: const {'rel': 'noopener'},
+              classes: 'hover:underline flex items-center gap-1',
+              [
+                const Component.text('GitHub'),
+                const Component.element(
+                  tag: 'i',
+                  classes: 'fab fa-github text-sm',
+                  children: [],
+                ),
+              ],
+            ),
+        ]),
+      ]),
+    ]);
+  }
 }

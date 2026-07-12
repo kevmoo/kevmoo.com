@@ -120,21 +120,15 @@ class _InteractivePostListState extends State<InteractivePostList> {
           final topPadding = isFirst ? 'pt-0' : 'pt-10';
           itemsToRender.add(
             div(
+              key: ValueKey('year-$postYear'),
               classes:
-                  'year-marker flex items-center gap-4 $topPadding '
-                  'first:pt-0 pb-4',
+                  'year-marker year-marker-container $topPadding first:pt-0',
               attributes: {'data-year': '$postYear'},
               [
-                span(
-                  classes: 'text-sky-400/90 font-black tracking-widest text-lg',
-                  [Component.text('$postYear')],
-                ),
-                const div(
-                  classes:
-                      'flex-grow h-[1px] bg-gradient-to-r '
-                      'from-sky-500/30 via-sky-500/10 to-transparent',
-                  [],
-                ),
+                span(classes: 'year-marker-text', [
+                  Component.text('$postYear'),
+                ]),
+                const div(classes: 'year-marker-line', []),
               ],
             ),
           );
@@ -142,7 +136,7 @@ class _InteractivePostListState extends State<InteractivePostList> {
       }
 
       if (isVisible) {
-        itemsToRender.add(_buildPostCard(post));
+        itemsToRender.add(PostCard(post: post, key: ValueKey(post.permalink)));
       }
     }
 
@@ -159,13 +153,11 @@ class _InteractivePostListState extends State<InteractivePostList> {
           div(classes: 'relative inline-block text-left', [
             // Trigger Button
             button(
-              classes:
-                  'bg-slate-100 dark:bg-slate-900 border border-slate-200 '
-                  'dark:border-slate-800 text-slate-700 dark:text-slate-300 '
-                  'text-sm font-semibold rounded-xl hover:bg-slate-200/80 '
-                  'dark:hover:bg-slate-800 transition-all shadow-sm '
-                  'cursor-pointer py-2.5 px-4 flex items-center gap-2',
-              attributes: {'id': 'flavor-dropdown-trigger'},
+              classes: 'dropdown-trigger',
+              attributes: const {
+                'id': 'flavor-dropdown-trigger',
+                'type': 'button',
+              },
               events: {
                 'click': (event) => setState(() => isMenuOpen = !isMenuOpen),
               },
@@ -184,26 +176,21 @@ class _InteractivePostListState extends State<InteractivePostList> {
 
             // Floating Menu Popup
             if (isMenuOpen)
-              div(
-                classes:
-                    'absolute right-0 mt-2 w-56 rounded-xl bg-white '
-                    'dark:bg-slate-900 border border-slate-200 '
-                    'dark:border-slate-800 shadow-xl p-1.5 z-50 '
-                    'flex flex-col gap-0.5 text-left',
-                [
-                  for (final f in availableFlavors)
-                    _buildDropdownItem(
-                      label: f.label,
-                      isSelected: selectedFlavor == f,
-                      onClick: () => _onFlavorSelected(f.name),
-                    ),
-                  _buildDropdownItem(
-                    label: 'Everything',
-                    isSelected: selectedFlavor == null,
-                    onClick: () => _onFlavorSelected(''),
+              div(classes: 'dropdown-menu', [
+                for (final f in availableFlavors)
+                  _DropdownItem(
+                    key: ValueKey(f.name),
+                    label: f.label,
+                    isSelected: selectedFlavor == f,
+                    onClick: () => _onFlavorSelected(f.name),
                   ),
-                ],
-              ),
+                _DropdownItem(
+                  key: const ValueKey('everything'),
+                  label: 'Everything',
+                  isSelected: selectedFlavor == null,
+                  onClick: () => _onFlavorSelected(''),
+                ),
+              ]),
           ]),
         ],
       ),
@@ -220,108 +207,85 @@ class _InteractivePostListState extends State<InteractivePostList> {
       if (hasMore)
         div(classes: 'text-center mt-12', [
           button(
-            attributes: {'id': 'show-more-btn'},
-            classes:
-                'bg-slate-100 dark:bg-slate-900 border '
-                'border-slate-200 dark:border-slate-800 text-slate-700 '
-                'dark:text-slate-300 px-6 py-2.5 rounded-lg text-sm '
-                'font-semibold hover:bg-slate-200/80 '
-                'dark:hover:bg-slate-800 transition-all shadow-sm '
-                'cursor-pointer',
+            attributes: const {'id': 'show-more-btn', 'type': 'button'},
+            classes: 'show-more-btn',
             events: {'click': (event) => setState(() => visibleCount += 10)},
             [const Component.text('Show more posts...')],
           ),
         ]),
     ]);
   }
+}
 
-  Component _buildPostCard(ClientPostItem post) => div(
-    classes:
-        'border border-slate-200 dark:border-slate-800/80 rounded-xl '
-        'p-5 bg-slate-50/50 dark:bg-slate-900/50 shadow-sm '
-        'hover:border-blue-500/40 dark:hover:border-blue-400/50 '
-        'transition-all appearance-card flex items-center gap-4',
+class PostCard extends StatelessComponent {
+  final ClientPostItem post;
+
+  const PostCard({required this.post, super.key});
+
+  @override
+  Component build(BuildContext context) => div(
+    classes: 'appearance-card',
     attributes: {
       'data-tags': post.tags.join(','),
       'data-year': post.year.toString(),
     },
     [
-      div(
-        classes:
-            'icon text-blue-600 dark:text-blue-400 w-10 text-center '
-            'flex-shrink-0',
-        [RawText(post.awesomeHtml)],
-      ),
-      div(classes: 'details flex flex-col text-left flex-1', [
-        div(
-          classes:
-              'title text-base font-bold text-slate-900 dark:text-white '
-              'mb-0.5',
-          [
-            a(
-              href: post.linkUrl,
-              target: post.isWriting ? null : Target.blank,
-              attributes: post.isWriting ? {} : {'rel': 'noopener'},
-              classes:
-                  'hover:text-blue-600 dark:hover:text-blue-400 '
-                  'transition-colors',
-              [
-                Component.text(post.title.trim()),
-                if (!post.isWriting) ...[
-                  const RawText('&nbsp;'),
-                  const Component.element(
-                    tag: 'i',
-                    classes: 'fa fa-external-link-alt text-xs opacity-50',
-                    children: [],
-                  ),
-                ],
+      div(classes: 'card-icon', [RawText(post.awesomeHtml)]),
+      div(classes: 'card-details', [
+        div(classes: 'card-title', [
+          a(
+            href: post.linkUrl,
+            target: post.isWriting ? null : Target.blank,
+            attributes: post.isWriting ? const {} : const {'rel': 'noopener'},
+            classes: 'card-title-link',
+            [
+              Component.text(post.title.trim()),
+              if (!post.isWriting) ...[
+                const RawText('&nbsp;'),
+                const Component.element(
+                  tag: 'i',
+                  classes: 'fa fa-external-link-alt text-xs opacity-50',
+                  children: [],
+                ),
               ],
-            ),
-          ],
-        ),
+            ],
+          ),
+        ]),
         if (post.subTitle.isNotEmpty)
-          div(classes: 'subtitle text-xs text-slate-500 dark:text-slate-400', [
-            Component.text(post.subTitle),
-          ]),
+          div(classes: 'card-subtitle', [Component.text(post.subTitle)]),
       ]),
-      div(
-        classes:
-            'date font-mono text-xs text-slate-400 dark:text-slate-500 '
-            'whitespace-nowrap ml-2',
-        [Component.text(post.dateString)],
-      ),
+      div(classes: 'card-date', [Component.text(post.dateString)]),
     ],
   );
+}
 
-  Component _buildDropdownItem({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onClick,
-  }) {
-    final activeClasses =
-        'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 '
-        'font-bold';
-    final inactiveClasses =
-        'text-slate-700 dark:text-slate-300 hover:bg-slate-100 '
-        'dark:hover:bg-slate-800/80';
-    final stateClasses = isSelected ? activeClasses : inactiveClasses;
+class _DropdownItem extends StatelessComponent {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onClick;
 
-    return button(
-      classes:
-          'w-full px-4 py-2.5 rounded-lg text-left text-sm font-medium '
-          'transition-colors cursor-pointer flex items-center '
-          'justify-between $stateClasses',
-      events: {'click': (event) => onClick()},
-      [
-        Component.text(label),
-        if (isSelected)
-          const Component.element(
-            tag: 'i',
-            classes:
-                'fas fa-check text-blue-600 dark:text-blue-400 text-xs ml-2',
-            children: [],
-          ),
-      ],
-    );
-  }
+  const _DropdownItem({
+    required this.label,
+    required this.isSelected,
+    required this.onClick,
+    super.key,
+  });
+
+  @override
+  Component build(BuildContext context) => button(
+    classes:
+        'dropdown-item-base '
+        '${isSelected ? 'dropdown-item-active' : 'dropdown-item-inactive'}',
+    attributes: const {'type': 'button'},
+    events: {'click': (event) => onClick()},
+    [
+      Component.text(label),
+      if (isSelected)
+        const Component.element(
+          tag: 'i',
+          classes: 'fas fa-check text-blue-600 dark:text-blue-400 text-xs ml-2',
+          children: [],
+        ),
+    ],
+  );
 }
