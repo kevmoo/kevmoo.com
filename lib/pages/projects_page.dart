@@ -4,10 +4,11 @@ import '../components/footer.dart';
 import '../components/header.dart';
 import '../constants.dart';
 import '../models/data_model.dart';
-import '../projects_content.dart';
 
 class ProjectsPage extends StatelessComponent {
-  const ProjectsPage({super.key});
+  final List<Project> projects;
+
+  const ProjectsPage({required this.projects, super.key});
 
   @override
   Component build(BuildContext context) {

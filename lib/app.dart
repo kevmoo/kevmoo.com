@@ -8,6 +8,7 @@ import 'pages/home.dart';
 import 'pages/post_page.dart';
 import 'pages/projects_page.dart';
 import 'pages/static_outputs.dart';
+import 'projects_content.dart' as projects_content;
 
 class App extends StatelessComponent {
   const App({super.key});
@@ -42,7 +43,8 @@ class App extends StatelessComponent {
           Route(
             path: '/projects',
             title: 'Projects | kevmoo @ Work',
-            builder: (context, state) => const ProjectsPage(),
+            builder: (context, state) =>
+                ProjectsPage(projects: projects_content.projects),
           ),
           Route(
             path: '/feed.xml',

@@ -71,8 +71,15 @@ ParsedContent parseFrontmatterString(
   final matches = _frontmatterDelimiter.allMatches(content, firstLineEnd + 1);
 
   if (matches.isEmpty) {
-    throw const FormatException(
-      'Malformed frontmatter (missing closing --- on its own line)',
+    if (requireFrontmatter) {
+      throw const FormatException(
+        'Malformed frontmatter (missing closing --- on its own line)',
+      );
+    }
+    return ParsedContent(
+      frontmatter: YamlMap.wrap(const {}),
+      bodyMarkdown: content,
+      blockSyntaxes: blockSyntaxes,
     );
   }
 
@@ -83,19 +90,30 @@ ParsedContent parseFrontmatterString(
   );
   final bodyMarkdown = content.substring(closingMatch.end).trim();
 
-  final yaml = loadYaml(frontmatterString);
-  final YamlMap yamlMap;
-  if (yaml == null) {
-    yamlMap = YamlMap.wrap(const {});
-  } else if (yaml is YamlMap) {
-    yamlMap = yaml;
-  } else {
-    throw const FormatException('Frontmatter is not a key-value map');
-  }
+  try {
+    final yaml = loadYaml(frontmatterString);
+    final YamlMap yamlMap;
+    if (yaml == null) {
+      yamlMap = YamlMap.wrap(const {});
+    } else if (yaml is YamlMap) {
+      yamlMap = yaml;
+    } else {
+      throw const FormatException('Frontmatter is not a key-value map');
+    }
 
-  return ParsedContent(
-    frontmatter: yamlMap,
-    bodyMarkdown: bodyMarkdown,
-    blockSyntaxes: blockSyntaxes,
-  );
+    return ParsedContent(
+      frontmatter: yamlMap,
+      bodyMarkdown: bodyMarkdown,
+      blockSyntaxes: blockSyntaxes,
+    );
+  } catch (e) {
+    if (requireFrontmatter) {
+      rethrow;
+    }
+    return ParsedContent(
+      frontmatter: YamlMap.wrap(const {}),
+      bodyMarkdown: content,
+      blockSyntaxes: blockSyntaxes,
+    );
+  }
 }
