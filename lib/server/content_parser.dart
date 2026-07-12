@@ -48,7 +48,7 @@ ParsedContent parseFrontmatterString(
       );
     }
     return ParsedContent(
-      frontmatter: YamlMap.wrap(const {}),
+      frontmatter: YamlMap(),
       bodyMarkdown: content,
       blockSyntaxes: blockSyntaxes,
     );
@@ -62,7 +62,7 @@ ParsedContent parseFrontmatterString(
       );
     }
     return ParsedContent(
-      frontmatter: YamlMap.wrap(const {}),
+      frontmatter: YamlMap(),
       bodyMarkdown: content,
       blockSyntaxes: blockSyntaxes,
     );
@@ -77,7 +77,7 @@ ParsedContent parseFrontmatterString(
       );
     }
     return ParsedContent(
-      frontmatter: YamlMap.wrap(const {}),
+      frontmatter: YamlMap(),
       bodyMarkdown: content,
       blockSyntaxes: blockSyntaxes,
     );
@@ -94,7 +94,7 @@ ParsedContent parseFrontmatterString(
     final yaml = loadYaml(frontmatterString);
     final YamlMap yamlMap;
     if (yaml == null) {
-      yamlMap = YamlMap.wrap(const {});
+      yamlMap = YamlMap();
     } else if (yaml is YamlMap) {
       yamlMap = yaml;
     } else {
@@ -111,7 +111,7 @@ ParsedContent parseFrontmatterString(
       rethrow;
     }
     return ParsedContent(
-      frontmatter: YamlMap.wrap(const {}),
+      frontmatter: YamlMap(),
       bodyMarkdown: content,
       blockSyntaxes: blockSyntaxes,
     );
