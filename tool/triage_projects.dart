@@ -32,7 +32,8 @@ void main(List<String> args) async {
     final ParsedContent parsed;
     try {
       parsed = parseFrontmatterString(content, requireFrontmatter: true);
-    } catch (_) {
+    } catch (e) {
+      print('Warning: Failed to parse frontmatter in ${file.path}: $e');
       continue;
     }
 

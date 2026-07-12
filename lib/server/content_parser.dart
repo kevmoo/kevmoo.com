@@ -51,18 +51,30 @@ ParsedContent parseFrontmatterString(
     );
   }
 
-  final frontmatterRegExp = RegExp(
-    r'^---[ \t]*[\r\n]+([\s\S]*?)[\r\n]+---[ \t]*[\r\n]*([\s\S]*)$',
-  );
-  final match = frontmatterRegExp.firstMatch(content);
-  if (match == null) {
+  final firstLineEnd = content.indexOf('\n');
+  if (firstLineEnd == -1) {
     throw const FormatException(
       'Malformed frontmatter (missing closing --- on its own line)',
     );
   }
 
-  final frontmatterString = match.group(1) ?? '';
-  final bodyMarkdown = (match.group(2) ?? '').trim();
+  final matches = RegExp(
+    r'^---[ \t]*\r?$',
+    multiLine: true,
+  ).allMatches(content, firstLineEnd + 1);
+
+  if (matches.isEmpty) {
+    throw const FormatException(
+      'Malformed frontmatter (missing closing --- on its own line)',
+    );
+  }
+
+  final closingMatch = matches.first;
+  final frontmatterString = content.substring(
+    firstLineEnd + 1,
+    closingMatch.start,
+  );
+  final bodyMarkdown = content.substring(closingMatch.end).trim();
 
   final yaml = loadYaml(frontmatterString);
   final YamlMap yamlMap;
