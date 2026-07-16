@@ -123,7 +123,7 @@ class PostPage extends StatelessComponent {
                           'text-xs font-semibold text-slate-400 '
                           'px-2.5 py-0.5 border border-slate-200 '
                           'rounded-md',
-                      [Component.text(tag)],
+                      [Component.text(content.normalizeTag(tag))],
                     ),
                   ),
                 ]),
