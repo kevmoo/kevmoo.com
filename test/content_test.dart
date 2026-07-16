@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:checks/checks.dart';
-import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:work_j832_com/content.dart';
+import 'package:work_j832_com/projects_content.dart' as projects_content;
 
 void main() {
   group('Content System Tests', () {
@@ -103,19 +101,18 @@ void main() {
       check(gitAliasPost.projectId).equals('personal_dotfiles');
     });
 
-    test('Verify all post projectId references correspond to existing project '
-        'files', () {
-      final projectFiles = Directory('_projects')
-          .listSync()
-          .whereType<File>()
-          .where((f) => f.path.endsWith('.md'))
-          .map((f) => p.basenameWithoutExtension(f.path))
-          .toSet();
+    test(
+      'Verify all post projectId references correspond to active projects',
+      () {
+        final activeProjectIds = projects_content.projects
+            .map((p) => p.id)
+            .toSet();
 
-      for (final post in posts.where((p) => p.projectId != null)) {
-        check(projectFiles).contains(post.projectId!);
-      }
-    });
+        for (final post in posts.where((p) => p.projectId != null)) {
+          check(activeProjectIds).contains(post.projectId!);
+        }
+      },
+    );
 
     test('generateAtomFeed filters out appearances', () {
       final feedXml = generateAtomFeed();
