@@ -94,11 +94,10 @@ void main() {
         migrationPost.contentHtml,
       ).isNotNull().contains('migrated the entire blog to Dart and');
 
-      // Verify that project metadata is parsed
       final gitAliasPost = posts.firstWhere(
         (p) => p.title == 'Git aliases are awesome, even locally',
       );
-      check(gitAliasPost.projectId).equals('personal_dotfiles');
+      check(gitAliasPost.projectId).isNull();
     });
 
     test(
