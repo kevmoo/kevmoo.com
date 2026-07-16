@@ -43,9 +43,7 @@ class PostPage extends StatelessComponent {
 
     final dateString = formatReadableDate(post.date);
     final hasSubtitle = post.subTitle != null && post.subTitle!.isNotEmpty;
-    final project = post.projectId == null
-        ? null
-        : projects_content.projectsById[post.projectId];
+    final project = projects_content.projectsById[post.projectId];
 
     return Component.fragment([
       Document.head(
