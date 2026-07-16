@@ -17,7 +17,7 @@ class ProjectsPage extends StatelessComponent {
 
     return Component.fragment([
       const Document.head(
-        children: [link(href: '$siteUrl/projects/', rel: 'canonical')],
+        children: [link(href: '$siteUrl/projects', rel: 'canonical')],
       ),
       div(
         classes:
@@ -134,7 +134,11 @@ class ProjectCard extends StatelessComponent {
                         classes:
                             'text-xs font-mono text-slate-400 '
                             'dark:text-slate-500 whitespace-nowrap',
-                        [Component.text(_formatDate(post.date))],
+                        [
+                          Component.text(
+                            formatReadableDate(post.date, shortMonth: true),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -183,22 +187,4 @@ class ProjectCard extends StatelessComponent {
       ]),
     ]);
   }
-}
-
-String _formatDate(DateTime date) {
-  final months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  return '${months[date.month - 1]} ${date.day}, ${date.year}';
 }

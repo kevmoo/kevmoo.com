@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:checks/checks.dart';
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:work_j832_com/content.dart';
 
@@ -98,6 +101,20 @@ void main() {
         (p) => p.title == 'Git aliases are awesome, even locally',
       );
       check(gitAliasPost.projectId).equals('personal_dotfiles');
+    });
+
+    test('Verify all post projectId references correspond to existing project '
+        'files', () {
+      final projectFiles = Directory('_projects')
+          .listSync()
+          .whereType<File>()
+          .where((f) => f.path.endsWith('.md'))
+          .map((f) => p.basenameWithoutExtension(f.path))
+          .toSet();
+
+      for (final post in posts.where((p) => p.projectId != null)) {
+        check(projectFiles).contains(post.projectId!);
+      }
     });
 
     test('generateAtomFeed filters out appearances', () {

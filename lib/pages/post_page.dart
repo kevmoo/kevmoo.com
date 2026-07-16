@@ -41,7 +41,7 @@ class PostPage extends StatelessComponent {
       ]);
     }
 
-    final dateString = _formatDate(post.date);
+    final dateString = formatReadableDate(post.date);
     final hasSubtitle = post.subTitle != null && post.subTitle!.isNotEmpty;
     final project = post.projectId == null
         ? null
@@ -140,21 +140,3 @@ class PostPage extends StatelessComponent {
     ]);
   }
 }
-
-String _formatDate(DateTime date) =>
-    '${_months[date.month - 1]} ${date.day}, ${date.year}';
-
-const _months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];

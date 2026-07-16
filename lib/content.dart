@@ -9,7 +9,7 @@ import 'server/content_parser.dart';
 
 export 'models/data_model.dart';
 
-List<Post> get posts => _loadPosts();
+final List<Post> posts = _loadPosts();
 
 List<Post> _loadPosts() {
   final postsList = <Post>[];
