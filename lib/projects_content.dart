@@ -3,7 +3,11 @@ import 'package:path/path.dart' as p;
 import 'models/data_model.dart';
 import 'server/content_parser.dart';
 
-final List<Project> projects = _loadProjects();
+final List<Project> projects = List.unmodifiable(_loadProjects());
+
+final Map<String, Project> projectsById = Map.unmodifiable({
+  for (final project in projects) project.id: project,
+});
 
 List<Project> _loadProjects() {
   final dir = Directory('_projects');

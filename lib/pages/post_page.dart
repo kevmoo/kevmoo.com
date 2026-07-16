@@ -45,9 +45,7 @@ class PostPage extends StatelessComponent {
     final hasSubtitle = post.subTitle != null && post.subTitle!.isNotEmpty;
     final project = post.projectId == null
         ? null
-        : projects_content.projects
-              .where((proj) => proj.id == post.projectId)
-              .firstOrNull;
+        : projects_content.projectsById[post.projectId];
 
     return Component.fragment([
       Document.head(
@@ -100,7 +98,7 @@ class PostPage extends StatelessComponent {
                   [Component.text(post.subTitle!)],
                 ),
               if (post.tags.isNotEmpty || project != null)
-                div(classes: 'flex items-center space-x-2 flex-wrap gap-y-2', [
+                div(classes: 'flex items-center flex-wrap gap-x-2 gap-y-2', [
                   if (project != null)
                     span(
                       classes:
