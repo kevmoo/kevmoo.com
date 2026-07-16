@@ -1,6 +1,7 @@
 import 'package:checks/checks.dart';
 import 'package:test/test.dart';
 import 'package:work_j832_com/content.dart';
+import 'package:work_j832_com/projects_content.dart' as projects_content;
 
 void main() {
   group('Content System Tests', () {
@@ -92,7 +93,25 @@ void main() {
       check(
         migrationPost.contentHtml,
       ).isNotNull().contains('migrated the entire blog to Dart and');
+
+      final gitAliasPost = posts.firstWhere(
+        (p) => p.title == 'Git aliases are awesome, even locally',
+      );
+      check(gitAliasPost.projectId).isNull();
     });
+
+    test(
+      'Verify all post projectId references correspond to active projects',
+      () {
+        final activeProjectIds = projects_content.projects
+            .map((p) => p.id)
+            .toSet();
+
+        for (final post in posts.where((p) => p.projectId != null)) {
+          check(activeProjectIds).contains(post.projectId!);
+        }
+      },
+    );
 
     test('generateAtomFeed filters out appearances', () {
       final feedXml = generateAtomFeed();

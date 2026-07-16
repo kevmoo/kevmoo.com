@@ -14,25 +14,13 @@ enum EntryFlavor {
   };
 
   String get awesome {
-    String clazz;
-    String title;
-    switch (this) {
-      case EntryFlavor.youtube:
-        clazz = 'fab fa-youtube fa-2x';
-        title = 'YouTube';
-      case EntryFlavor.podcast:
-        clazz = 'fa fa-podcast fa-2x';
-        title = 'Podcast';
-      case EntryFlavor.calendar:
-        clazz = 'fa fa-calendar fa-2x';
-        title = 'Future event';
-      case EntryFlavor.writing:
-        clazz = 'fa fa-pencil-alt fa-2x';
-        title = 'Writing';
-      case EntryFlavor.link:
-        clazz = 'fa fa-link fa-2x';
-        title = 'Link';
-    }
+    final (clazz, title) = switch (this) {
+      EntryFlavor.youtube => ('fab fa-youtube fa-2x', 'YouTube'),
+      EntryFlavor.podcast => ('fa fa-podcast fa-2x', 'Podcast'),
+      EntryFlavor.calendar => ('fa fa-calendar fa-2x', 'Future event'),
+      EntryFlavor.writing => ('fa fa-pencil-alt fa-2x', 'Writing'),
+      EntryFlavor.link => ('fa fa-link fa-2x', 'Link'),
+    };
     return '<i class="$clazz" title="$title"></i>';
   }
 }
@@ -47,6 +35,7 @@ class Post {
   final bool isHtml;
   final String? uri;
   final EntryFlavor flavor;
+  final String? projectId;
 
   Post({
     required this.permalink,
@@ -58,6 +47,7 @@ class Post {
     required this.isHtml,
     this.uri,
     required this.flavor,
+    this.projectId,
   });
 }
 
@@ -69,7 +59,6 @@ class Project {
   final String? installCommand;
   final bool featured;
   final bool ignore;
-  final List<String> relatedPostPermalinks;
   final String contentHtml;
   final String? latestVersion;
   final int? githubStars;
@@ -86,7 +75,6 @@ class Project {
     this.installCommand,
     this.featured = false,
     this.ignore = false,
-    this.relatedPostPermalinks = const [],
     required this.contentHtml,
     this.latestVersion,
     this.githubStars,

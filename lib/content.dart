@@ -9,7 +9,7 @@ import 'server/content_parser.dart';
 
 export 'models/data_model.dart';
 
-List<Post> get posts => _loadPosts();
+final List<Post> posts = List.unmodifiable(_loadPosts());
 
 List<Post> _loadPosts() {
   final postsList = <Post>[];
@@ -158,6 +158,8 @@ Post _parseJekyllPost(String filePath, String filename, String content) {
     );
   }
 
+  final projectId = yaml['project']?.toString();
+
   return Post(
     permalink: permalink,
     title: title,
@@ -168,6 +170,7 @@ Post _parseJekyllPost(String filePath, String filename, String content) {
     isHtml: isHtml,
     uri: null,
     flavor: EntryFlavor.writing,
+    projectId: projectId,
   );
 }
 

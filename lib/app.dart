@@ -52,7 +52,8 @@ class App extends StatelessComponent {
           Route(
             path: '/projects',
             title: 'Projects | $authorName',
-            builder: (context, state) => ProjectsPage(projects: projects),
+            builder: (context, state) =>
+                ProjectsPage(projects: projects, posts: posts),
           ),
           Route(
             path: '/feed.xml',

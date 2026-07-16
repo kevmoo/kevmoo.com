@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:path/path.dart' as p;
-import 'package:yaml/yaml.dart';
 import 'models/data_model.dart';
 import 'server/content_parser.dart';
 
-List<Project> get projects => _loadProjects();
+final List<Project> projects = List.unmodifiable(_loadProjects());
+
+final Map<String, Project> projectsById = Map.unmodifiable({
+  for (final project in projects) project.id: project,
+});
 
 List<Project> _loadProjects() {
   final dir = Directory('_projects');
@@ -63,11 +66,6 @@ Project parseProjectFile(File file) {
     installCommand: installCmd,
     featured: yamlMap['featured'] == true,
     ignore: yamlMap['ignore'] == true,
-    relatedPostPermalinks:
-        (yamlMap['related_posts'] as YamlList?)
-            ?.map((e) => e.toString())
-            .toList() ??
-        const [],
     contentHtml: parsed.bodyHtml,
     latestVersion: yamlMap['version']?.toString(),
     githubStars: yamlMap['stars'] is int
