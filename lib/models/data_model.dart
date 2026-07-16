@@ -47,6 +47,7 @@ class Post {
   final bool isHtml;
   final String? uri;
   final EntryFlavor flavor;
+  final String? projectId;
 
   Post({
     required this.permalink,
@@ -58,6 +59,7 @@ class Post {
     required this.isHtml,
     this.uri,
     required this.flavor,
+    this.projectId,
   });
 }
 

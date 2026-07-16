@@ -4,7 +4,7 @@ repo: kevmoo/slide_puzzle
 featured: true
 stars: 179
 last_reviewed_sha: "c467500420f38fb75b6f9aaca30e2a2b5276a677"
-last_reviewed_at: "2026-07-12T06:05:48.296926Z"
+last_reviewed_at: "2026-07-13T06:00:24.770515Z"
 ---
 
 High-performance 15-puzzle $A^*$ solver and interactive web game built with **Dart 3** and **Flutter**.

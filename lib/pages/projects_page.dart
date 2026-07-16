@@ -7,8 +7,9 @@ import '../models/data_model.dart';
 
 class ProjectsPage extends StatelessComponent {
   final List<Project> projects;
+  final List<Post> posts;
 
-  const ProjectsPage({required this.projects, super.key});
+  const ProjectsPage({required this.projects, required this.posts, super.key});
 
   @override
   Component build(BuildContext context) {
@@ -43,7 +44,13 @@ class ProjectsPage extends StatelessComponent {
 
             div(classes: 'grid grid-cols-1 gap-8', [
               for (final project in allProjects)
-                ProjectCard(project: project, key: ValueKey(project.id)),
+                ProjectCard(
+                  project: project,
+                  relatedPosts: posts
+                      .where((post) => post.projectId == project.id)
+                      .toList(),
+                  key: ValueKey(project.id),
+                ),
             ]),
           ]),
           const Footer(),
@@ -55,8 +62,13 @@ class ProjectsPage extends StatelessComponent {
 
 class ProjectCard extends StatelessComponent {
   final Project project;
+  final List<Post> relatedPosts;
 
-  const ProjectCard({required this.project, super.key});
+  const ProjectCard({
+    required this.project,
+    required this.relatedPosts,
+    super.key,
+  });
 
   @override
   Component build(BuildContext context) {
@@ -64,7 +76,7 @@ class ProjectCard extends StatelessComponent {
     final pubUrl = project.pubUrl;
     final githubUrl = project.githubUrl;
 
-    return div(classes: 'project-card', [
+    return div(id: project.id, classes: 'project-card', [
       div([
         div(classes: 'flex items-center justify-between gap-3 mb-2', [
           div(classes: 'project-metadata', [
@@ -92,6 +104,44 @@ class ProjectCard extends StatelessComponent {
         div(classes: 'prose prose-slate dark:prose-invert project-desc', [
           RawText(project.contentHtml),
         ]),
+        if (relatedPosts.isNotEmpty) ...[
+          div(
+            classes:
+                'mt-4 pt-4 border-t border-slate-100 '
+                'dark:border-slate-800/60',
+            [
+              const div(
+                classes:
+                    'text-xs font-semibold text-slate-400 '
+                    'dark:text-slate-500 uppercase tracking-wider mb-2',
+                [Component.text('Related Posts')],
+              ),
+              ul(classes: 'space-y-1.5', [
+                for (final post in relatedPosts)
+                  li(
+                    classes:
+                        'text-sm flex items-center '
+                        'justify-between gap-4',
+                    [
+                      a(
+                        href: post.permalink,
+                        classes:
+                            'hover:underline text-slate-700 '
+                            'dark:text-slate-200 font-medium flex-1',
+                        [Component.text(post.title)],
+                      ),
+                      span(
+                        classes:
+                            'text-xs font-mono text-slate-400 '
+                            'dark:text-slate-500 whitespace-nowrap',
+                        [Component.text(_formatDate(post.date))],
+                      ),
+                    ],
+                  ),
+              ]),
+            ],
+          ),
+        ],
       ]),
       div(classes: 'project-footer', [
         if (installCommand != null && installCommand.isNotEmpty)
@@ -133,4 +183,22 @@ class ProjectCard extends StatelessComponent {
       ]),
     ]);
   }
+}
+
+String _formatDate(DateTime date) {
+  final months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  return '${months[date.month - 1]} ${date.day}, ${date.year}';
 }

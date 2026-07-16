@@ -5,6 +5,7 @@ import '../components/footer.dart';
 import '../components/header.dart';
 import '../constants.dart';
 import '../content.dart' as content;
+import '../projects_content.dart' as projects_content;
 
 class PostPage extends StatelessComponent {
   final String permalink;
@@ -14,13 +15,9 @@ class PostPage extends StatelessComponent {
   @override
   Component build(BuildContext context) {
     // Search for post by permalink
-    content.Post? post;
-    for (final p in content.posts) {
-      if (p.permalink == permalink) {
-        post = p;
-        break;
-      }
-    }
+    final post = content.posts
+        .where((entry) => entry.permalink == permalink)
+        .firstOrNull;
 
     // 404 fallback
     if (post == null) {
@@ -46,6 +43,11 @@ class PostPage extends StatelessComponent {
 
     final dateString = _formatDate(post.date);
     final hasSubtitle = post.subTitle != null && post.subTitle!.isNotEmpty;
+    final project = post.projectId == null
+        ? null
+        : projects_content.projects
+              .where((proj) => proj.id == post.projectId)
+              .firstOrNull;
 
     return Component.fragment([
       Document.head(
@@ -97,21 +99,34 @@ class PostPage extends StatelessComponent {
                       'font-medium leading-relaxed mb-6 italic',
                   [Component.text(post.subTitle!)],
                 ),
-              if (post.tags.isNotEmpty)
-                div(
-                  classes: 'flex items-center space-x-2',
-                  post.tags
-                      .map(
-                        (tag) => span(
-                          classes:
-                              'text-xs font-semibold text-slate-400 '
-                              'px-2.5 py-0.5 border border-slate-200 '
-                              'rounded-md',
-                          [Component.text(tag)],
+              if (post.tags.isNotEmpty || project != null)
+                div(classes: 'flex items-center space-x-2 flex-wrap gap-y-2', [
+                  if (project != null)
+                    span(
+                      classes:
+                          'text-xs font-semibold text-blue-600 '
+                          'dark:text-blue-400 px-2.5 py-0.5 '
+                          'border border-blue-200 '
+                          'dark:border-blue-900 rounded-md '
+                          'bg-blue-50/50 dark:bg-blue-950/20',
+                      [
+                        a(
+                          href: '/projects#${project.id}',
+                          classes: 'hover:underline',
+                          [Component.text('Project: ${project.name}')],
                         ),
-                      )
-                      .toList(),
-                ),
+                      ],
+                    ),
+                  ...post.tags.map(
+                    (tag) => span(
+                      classes:
+                          'text-xs font-semibold text-slate-400 '
+                          'px-2.5 py-0.5 border border-slate-200 '
+                          'rounded-md',
+                      [Component.text(tag)],
+                    ),
+                  ),
+                ]),
             ]),
 
             // Article Body (Beautiful Prose)
