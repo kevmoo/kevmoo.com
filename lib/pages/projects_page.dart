@@ -15,6 +15,14 @@ class ProjectsPage extends StatelessComponent {
   Component build(BuildContext context) {
     final allProjects = projects;
 
+    final postsByProject = <String, List<Post>>{};
+    for (final post in posts) {
+      final projectId = post.projectId;
+      if (projectId != null) {
+        postsByProject.putIfAbsent(projectId, () => []).add(post);
+      }
+    }
+
     return Component.fragment([
       const Document.head(
         children: [link(href: '$siteUrl/projects', rel: 'canonical')],
@@ -46,9 +54,7 @@ class ProjectsPage extends StatelessComponent {
               for (final project in allProjects)
                 ProjectCard(
                   project: project,
-                  relatedPosts: posts
-                      .where((post) => post.projectId == project.id)
-                      .toList(),
+                  relatedPosts: postsByProject[project.id] ?? const [],
                   key: ValueKey(project.id),
                 ),
             ]),
