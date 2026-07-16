@@ -98,20 +98,16 @@ class PostPage extends StatelessComponent {
               if (post.tags.isNotEmpty || project != null)
                 div(classes: 'flex items-center flex-wrap gap-x-2 gap-y-2', [
                   if (project != null)
-                    span(
+                    a(
+                      href: '/projects#${project.id}',
                       classes:
                           'text-xs font-semibold text-blue-600 '
                           'dark:text-blue-400 px-2.5 py-0.5 '
                           'border border-blue-200 '
                           'dark:border-blue-900 rounded-md '
-                          'bg-blue-50/50 dark:bg-blue-950/20',
-                      [
-                        a(
-                          href: '/projects#${project.id}',
-                          classes: 'hover:underline',
-                          [Component.text('Project: ${project.name}')],
-                        ),
-                      ],
+                          'bg-blue-50/50 dark:bg-blue-950/20 '
+                          'hover:underline',
+                      [Component.text('Project: ${project.name}')],
                     ),
                   ...post.tags.map(
                     (tag) => span(
