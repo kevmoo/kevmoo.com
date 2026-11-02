@@ -9,7 +9,8 @@ tags:
 As I [posted](https://plus.google.com/+KevinMoore314/posts/GqaQTKm7EdJ) and
 [tweeted](https://twitter.com/kevmoo/status/621840012586323968) about yesterday,
 I wanted to see if anyone had experience going from Blogger to
-[Jekyll](http://jekyllrb.com/) on [GitHub](http://jekyllrb.com/docs/github-pages/).
+[Jekyll](http://jekyllrb.com/) on
+[GitHub](http://jekyllrb.com/docs/github-pages/).
 
 No one chimed in, so I dove it.
 
