@@ -8,9 +8,11 @@ tags:
   - communication
 ---
 
-> [!NOTE] We have this thing at Google called "learning on the loo". Posts put
-> up in bathrooms all over the company. Seriously. Anyway, I got one published
-> on September 23, 2024.
+> [!NOTE]
+>
+> We have this thing at Google called "learning on the loo". Posts put up in
+> bathrooms all over the company. Seriously. Anyway, I got one published on
+> September 23, 2024.
 
 Greta Googler has been trying to find a resolution on a design decision for
 weeks. Tessa Techlead doesn't understand the importance of the change and isn’t

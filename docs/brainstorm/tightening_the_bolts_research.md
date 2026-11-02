@@ -390,8 +390,8 @@ Pinning CI action SHAs, upgrading build engines, and deleting dead dependencies:
   **ci: configure explicit Go caching and pin cache action SHAs**
   > Disable default actions/setup-go caching (which logs warnings because go.mod
   > is not present at the repository root) and configure explicit actions/cache
-  > caching for ~/.cache/go-build and ~/go/pkg/mod keyed by LIBRARIAN_VERSION.
-  > Also update all action...
+  > caching for `~/.cache/go-build` and `~/go/pkg/mod` keyed by
+  > LIBRARIAN_VERSION. Also update all action...
 - [#294](https://github.com/googleapis/google-cloud-dart/pull/294) `2026-06-23`
   **refactor(google_cloud_logging)!: namespace zone variable keys**
   > Prefix googleCloudProjectIdZoneVariable and
