@@ -10,4 +10,6 @@ last_reviewed_at: "2026-07-13T06:00:29.292665Z"
 
 The source code and static engine behind this very blog and project showcase!
 
-Built entirely in Dart using the **Jaspr** static site generator (`mode: static`), featuring dynamic Markdown compilation, Tailwind CSS styling, and local AI agent triage loops.
+Built entirely in Dart using the **Jaspr** static site generator
+(`mode: static`), featuring dynamic Markdown compilation, Tailwind CSS styling,
+and local AI agent triage loops.

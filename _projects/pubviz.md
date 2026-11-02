@@ -11,6 +11,9 @@ last_reviewed_sha: "2e92cd53bc46d6373fafdac31f94044a2366b2f5"
 last_reviewed_at: "2026-07-13T06:00:27.224965Z"
 ---
 
-Visualize Dart and Flutter package dependencies as interactive HTML graphs directly from your terminal.
+Visualize Dart and Flutter package dependencies as interactive HTML graphs
+directly from your terminal.
 
-`pubviz` inspects your `pubspec.yaml` and `.dart_tool/package_config.json` to generate Graphviz/DOT visualizations, helping you spot circular dependencies, unexpected transitive bloat, and package layering issues.
+`pubviz` inspects your `pubspec.yaml` and `.dart_tool/package_config.json` to
+generate Graphviz/DOT visualizations, helping you spot circular dependencies,
+unexpected transitive bloat, and package layering issues.
