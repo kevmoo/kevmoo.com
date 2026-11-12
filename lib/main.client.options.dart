@@ -31,12 +31,10 @@ ClientOptions get defaultClientOptions => ClientOptions(
   clients: {
     'interactive_post_list': ClientLoader(
       (p) => _interactive_post_list.InteractivePostList(
-        posts: (p['posts'] as List<Object?>)
-            .map(
-              (i) => _client_post_item.ClientPostItem.fromRaw(
-                i as Map<String, dynamic>,
-              ),
-            )
+        posts: p
+            .get<List<Object?>>('posts')
+            .cast<Map<String, dynamic>>()
+            .map((i) => _client_post_item.ClientPostItem.fromRaw(i))
             .toList(),
       ),
       loader: _interactive_post_list.loadLibrary,
