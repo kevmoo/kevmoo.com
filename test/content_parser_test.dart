@@ -23,7 +23,7 @@ This is the body.
     test('Parse optional frontmatter when not present', () {
       const content = 'This is just markdown without frontmatter.';
       final parsed = parseFrontmatterString(content, requireFrontmatter: false);
-      check(parsed.frontmatter).isEmpty();
+      check(parsed.frontmatter).isEmpty;
       check(parsed.bodyMarkdown).equals(content);
     });
 
@@ -31,7 +31,7 @@ This is the body.
         'without newline', () {
       const content = '---';
       final parsed = parseFrontmatterString(content, requireFrontmatter: false);
-      check(parsed.frontmatter).isEmpty();
+      check(parsed.frontmatter).isEmpty;
       check(parsed.bodyMarkdown).equals(content);
     });
 
@@ -50,7 +50,7 @@ title: No closing delimiter
 This is the body that starts with horizontal rule-like delimiter
 ''';
       final parsed = parseFrontmatterString(content, requireFrontmatter: false);
-      check(parsed.frontmatter).isEmpty();
+      check(parsed.frontmatter).isEmpty;
       check(parsed.bodyMarkdown).equals(content);
     });
 
@@ -76,7 +76,7 @@ invalid: yaml: parsing: error: here
 Body
 ''';
       final parsed = parseFrontmatterString(content, requireFrontmatter: false);
-      check(parsed.frontmatter).isEmpty();
+      check(parsed.frontmatter).isEmpty;
       check(parsed.bodyMarkdown).equals(content);
     });
 

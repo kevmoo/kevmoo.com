@@ -7,7 +7,7 @@ void main() {
   group('Content System Tests', () {
     test('Verify total posts and appearances loaded', () {
       // We should have the 127 original posts plus the 27 new appearances
-      check(posts).isNotEmpty();
+      check(posts).isNotEmpty;
       check(posts.length).isGreaterThan(150);
     });
 
@@ -17,13 +17,13 @@ void main() {
           .where((p) => p.flavor != EntryFlavor.writing)
           .toList();
 
-      check(appearances).isNotEmpty();
+      check(appearances).isNotEmpty;
 
       // Verify that every appearance has no markdown body and has a URI/flavor
       for (final appearance in appearances) {
-        check(appearance.contentHtml).isNull();
+        check(appearance.contentHtml).isNull;
         check(appearance.uri).isNotNull();
-        check(appearance.flavor).not((it) => it.equals(EntryFlavor.writing));
+        check(appearance.flavor).not(.it()..equals(EntryFlavor.writing));
       }
 
       // Check a specific known appearance
@@ -75,12 +75,12 @@ void main() {
           .where((p) => p.flavor == EntryFlavor.writing)
           .toList();
 
-      check(writings).isNotEmpty();
+      check(writings).isNotEmpty;
 
       for (final post in writings) {
         check(post.contentHtml).isNotNull();
-        check(post.permalink).isNotEmpty();
-        check(post.permalink.startsWith('/')).isTrue();
+        check(post.permalink).isNotEmpty;
+        check(post.permalink.startsWith('/')).isTrue;
       }
 
       // Check a specific known post (e.g. migrating-to-jaspr)
@@ -97,7 +97,7 @@ void main() {
       final gitAliasPost = posts.firstWhere(
         (p) => p.title == 'Git aliases are awesome, even locally',
       );
-      check(gitAliasPost.projectId).isNull();
+      check(gitAliasPost.projectId).isNull;
     });
 
     test(
@@ -117,25 +117,23 @@ void main() {
       final feedXml = generateAtomFeed();
 
       // Verify the feed generated correctly
-      check(feedXml).isNotEmpty();
+      check(feedXml).isNotEmpty;
       check(feedXml).contains('<feed xmlns="http://www.w3.org/2005/Atom">');
 
       // The feed should contain actual blog posts (writings)
       check(feedXml).contains('Migrating to Jaspr');
 
       // The feed must NOT contain any appearance external URIs or titles
+      check(feedXml).not(.it()..contains('Unify your tech stack with Dart'));
       check(
         feedXml,
-      ).not((it) => it.contains('Unify your tech stack with Dart'));
-      check(
-        feedXml,
-      ).not((it) => it.contains('https://www.youtube.com/watch?v=XOU5dZJvHXk'));
+      ).not(.it()..contains('https://www.youtube.com/watch?v=XOU5dZJvHXk'));
     });
 
     test('generateSitemap filters out appearances', () {
       final sitemapXml = generateSitemap();
 
-      check(sitemapXml).isNotEmpty();
+      check(sitemapXml).isNotEmpty;
       check(sitemapXml).contains(
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
       );
@@ -146,13 +144,13 @@ void main() {
 
       // Sitemap must NOT have any entry without a permalink
       check(sitemapXml).not(
-        (it) => it.contains(
+        .it()..contains(
           '<loc>http://localhost:8080/</loc>',
         ), // Home page is fine, but no empty locs
       );
       check(
         sitemapXml,
-      ).not((it) => it.contains('https://www.youtube.com/watch?v=XOU5dZJvHXk'));
+      ).not(.it()..contains('https://www.youtube.com/watch?v=XOU5dZJvHXk'));
     });
   });
 }
